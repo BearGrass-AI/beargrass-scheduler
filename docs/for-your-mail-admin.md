@@ -7,13 +7,13 @@ Written 2026-09-17; the DNS facts are re-measurable with the commands shown.
 
 | Message | From | To | Attachment |
 |---|---|---|---|
-| The ask: "someone wants to meet you, reply with your free times" | `meet+<12 letters>@beargrass.ai`, display name "Beargrass SchedBot for <organiser>" | each participant, privately | none |
+| The ask: "someone wants to meet you, reply with your free times" | `meet+<12 letters>@beargrass.ai`, display name "Beargrass SchedBot for <organizer>" | each participant, privately | none |
 | A receipt after each reply | the same address | the person who replied | none |
 | One nudge after 48 hours of silence | the same address | the quiet participant | none |
-| The invite | the same address, on the organiser's behalf | everyone on the organiser's To line | `invite.ics`, `text/calendar`, iTIP METHOD:REQUEST |
+| The invite | the same address, on the organizer's behalf | everyone on the organizer's To line | `invite.ics`, `text/calendar`, iTIP METHOD:REQUEST |
 
 Every message also carries `Auto-Submitted: auto-generated`, `In-Reply-To` and `References` pointing at the
-organiser's own email, and a plain-text part beside the HTML. Links appear only in the invite: an add-to-calendar
+organizer's own email, and a plain-text part beside the HTML. Links appear only in the invite: an add-to-calendar
 link for Google and one for Outlook, for clients that show the attachment as a file.
 
 The `<12 letters>` tag is one meeting; it changes for every meeting. Allow-listing the domain, not an address, is
@@ -48,7 +48,7 @@ Google's receiving verdict on 2026-09-17 was `spf=pass dkim=pass dmarc=pass`.
 
 ## What is stored, where, for how long
 
-For one meeting: the names and addresses on the organiser's To line, the organiser's own words from the kickoff,
+For one meeting: the names and addresses on the organizer's To line, the organizer's own words from the kickoff,
 each participant's free times as they sent them, and the chosen slot. One record per meeting, on Cloudflare
 (a Durable Object), deleted 30 days after the meeting window ends, or sooner if the poll is closed. Nothing is
 read from any calendar. No third party receives any of it. A calendar screenshot, if a participant sends one, is

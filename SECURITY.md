@@ -10,9 +10,9 @@ anywhere in the code, the config, or the deploy.
 **What it trusts.** Nothing a sender says about themselves. A meeting starts only when the From header is on an
 invited domain and the platform's own `Authentication-Results` header, the one whose authserv-id is the
 platform's, says DKIM or DMARC passed for exactly that domain. Replies count only from addresses on the
-organiser's original To line. Auto-replies and calendar replies are never read. Addresses are sanitised before
-they reach a calendar line. One organiser is capped per day and per month.
+organizer's original To line. Auto-replies and calendar replies are never read. Addresses are sanitized before
+they reach a calendar line. One organizer is capped per day and per month.
 
-**What it keeps, and for how long.** The names and addresses on the organiser's To line, the organiser's own
+**What it keeps, and for how long.** The names and addresses on the organizer's To line, the organizer's own
 words, each reply's free times, the chosen slot. Deleted 30 days after the meeting window ends. Nothing is
 read from any calendar; nothing is shared with a third party. See `docs/for-your-mail-admin.md`.

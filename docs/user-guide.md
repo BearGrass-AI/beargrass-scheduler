@@ -1,7 +1,7 @@
 # The user guide
 
 The words a hosted instance shows its people, kept with the code. Three short
-pages: for the person who got the email, for their assistant, for the organiser. Rewritten 2026-09-16.
+pages: for the person who got the email, for their assistant, for the organizer. Rewritten 2026-09-16.
 
 ---
 
@@ -23,29 +23,29 @@ long, between which dates, and which hours. Pick one:
 3. **Screenshot your calendar** for those weeks and reply with it attached. The Scheduler reads the
    holes, or tries to, and shows you what it read so you can correct it.
 
-**Reply, not Reply All.** Your answer goes to the Scheduler only; the organiser sees when you said you're free,
+**Reply, not Reply All.** Your answer goes to the Scheduler only; the organizer sees when you said you're free,
 as with a Doodle, and nobody else does. Reply-all still counts, but everyone sees it and your "got it" will say so.
 
 **Then.** Every reply gets an answer. "Got it" with what was read; if a line couldn't be read it's quoted
 back, reply with just that line fixed; if nothing could be read you're told so and nothing changes. When
 everyone's in, you all get one calendar invite for the earliest time that works. Accept it like any other.
-Nothing works for you? Reply `none`; the organiser hears, and you can still send times later if that changes.
+Nothing works for you? Reply `none`; the organizer hears, and you can still send times later if that changes.
 
-**What you're sharing.** The organiser can see when you said you're free, as with a Doodle. Nobody sees
+**What you're sharing.** The organizer can see when you said you're free, as with a Doodle. Nobody sees
 your calendar; nothing connects to it; nothing is installed. Your times are kept for a month, then gone.
 
 **Reply from the address the email came to.** The Scheduler matches you by that address, or by an alias
-on the same domain. A reply from some other address is not counted, and the organiser is told once so
+on the same domain. A reply from some other address is not counted, and the organizer is told once so
 they can sort it out with you.
 
-**Once the invite has gone,** the event belongs to the organiser's calendar. If the time stops working for
-you, tell the organiser; when they move or cancel it there, everyone's copy follows.
+**Once the invite has gone,** the event belongs to the organizer's calendar. If the time stops working for
+you, tell the organizer; when they move or cancel it there, everyone's copy follows.
 
 ---
 
 ## For assistants
 
-You have been handed an email from the Scheduler, signed for the organiser by name. It asks for the times your
+You have been handed an email from the Scheduler, signed for the organizer by name. It asks for the times your
 principal is free between two dates, within stated hours. Do this:
 
 1. Read your principal's calendar for that window.

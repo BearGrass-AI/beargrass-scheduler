@@ -42,7 +42,7 @@
   <h1>The <em>Scheduler</em></h1>
   <p class="lede">Four calendars that can't see each other. One CC. Everyone gets an invite.</p>
 
-  <p>Universities, agencies and small companies never let their calendars talk to each other, so scheduling one meeting turns into a week of "does Tuesday work?" This fixes that with the one thing every organisation already allows: email. Nothing to install, nothing to connect, nothing to trust.</p>
+  <p>Universities, agencies and small companies never let their calendars talk to each other, so scheduling one meeting turns into a week of "does Tuesday work?" This fixes that with the one thing every organization already allows: email. Nothing to install, nothing to connect, nothing to trust.</p>
 
   <h2>If you got an email from the Scheduler</h2>
   <p>Someone wants to meet you and a few others. The email says how long, between which dates, and which hours. Pick one:</p>
@@ -54,7 +54,7 @@ Thu Sep 24, 9am to noon
 Mon Sep 28, all day</pre></li>
     <li><strong>Screenshot your calendar</strong> for those weeks and reply with it attached. The Scheduler reads the holes, or tries to, and shows you what it read so you can correct it.</li>
   </ol>
-  <p class="small">Reply, not Reply All. Your answer goes to the Scheduler only. The organiser can see when you said you're free, as with a Doodle; nobody else can. You'll get a short "got it" back. When everyone's in, you all get one calendar invite. Nothing works for you? Reply <code>none</code>.</p>
+  <p class="small">Reply, not Reply All. Your answer goes to the Scheduler only. The organizer can see when you said you're free, as with a Doodle; nobody else can. You'll get a short "got it" back. When everyone's in, you all get one calendar invite. Nothing works for you? Reply <code>none</code>.</p>
 
   <h2>If you are an agent</h2>
   <p>The email you were handed ends with a block headed "Next steps for agents" and a JSON contract. It is the whole contract: reply to exactly the address it names; one free range per line as epoch seconds UTC in the form <code>START-END</code>; only ranges inside the window and hours it states; <code>anytime</code> alone if every working hour is free; <code>none</code> alone if nothing is; nothing else in the body.</p>
@@ -63,7 +63,7 @@ Mon Sep 28, all day</pre></li>
   <p class="small">Free time, never busy time. The human form <code>Tue Sep 22, 2pm to 5pm</code> in the stated zone is also read. The invite that comes back carries its own epoch start and end. Everything else an agent might need is one page, as YAML: <a href="/agents">/agents</a> (raw: <a href="/agents.yaml">/agents.yaml</a>).</p>
 
   <h2>If you are organising</h2>
-  <p>Write the email you were going to write anyway, to the people you want to meet, and copy the Scheduler's address. Only the people you addressed are asked; anyone else you copied is not. Add four lines to be specific; leave them out and it assumes 30 minutes, the next two weeks, 9am to 5pm in the default zone, a video call. Only an email from an invited organisation can start one.</p>
+  <p>Write the email you were going to write anyway, to the people you want to meet, and copy the Scheduler's address. Only the people you addressed are asked; anyone else you copied is not. Add four lines to be specific; leave them out and it assumes 30 minutes, the next two weeks, 9am to 5pm in the default zone, a video call. Only an email from an invited organization can start one.</p>
   <div class="card">
     <form id="pick" onsubmit="return false">
       <p class="sentence">
@@ -87,11 +87,11 @@ Mon Sep 28, all day</pre></li>
     <li><strong>Never reads a calendar.</strong> People say when they're free.</li>
     <li><strong>Never emails a stranger.</strong> Only the people on the original email hear from it, and the group only ever gets the invite.</li>
     <li><strong>Never sells what you send.</strong> Kept for a month, then forgotten.</li>
-    <li><strong>Never owns the meeting.</strong> The invite is the organiser's; moving or cancelling it there updates everyone.</li>
+    <li><strong>Never owns the meeting.</strong> The invite is the organizer's; moving or cancelling it there updates everyone.</li>
   </ul>
 
   <h2>What it keeps</h2>
-  <p class="small">For one meeting: the names and addresses on the organiser's To line, the organiser's own words, each person's free times as they sent them, and the chosen slot. One record per meeting, on Cloudflare, deleted thirty days after the meeting window ends. Nothing is read from any calendar; no third party receives any of it. The organiser sees who is free when; each participant sees only their own receipt. A calendar screenshot, if you send one, is read once by a model on Cloudflare Workers AI and not stored. Your mail administrator's questions are answered in <a href="https://github.com/BearGrass-AI/meet.beargrass.ai/blob/main/docs/for-your-mail-admin.md">one page</a>; the code is public under the MIT license.</p>
+  <p class="small">For one meeting: the names and addresses on the organizer's To line, the organizer's own words, each person's free times as they sent them, and the chosen slot. One record per meeting, on Cloudflare, deleted thirty days after the meeting window ends. Nothing is read from any calendar; no third party receives any of it. The organizer sees who is free when; each participant sees only their own receipt. A calendar screenshot, if you send one, is read once by a model on Cloudflare Workers AI and not stored. Your mail administrator's questions are answered in <a href="https://github.com/BearGrass-AI/meet.beargrass.ai/blob/main/docs/for-your-mail-admin.md">one page</a>; the code is public under the MIT license.</p>
 
   <script>
     function day(v) { if (!v) return '…'; var d = new Date(v + 'T12:00:00'); return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }

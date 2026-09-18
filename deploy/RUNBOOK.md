@@ -47,7 +47,7 @@ npx wrangler deploy            # the top-level environment: every recipient rewr
 ```
 
 Then the reading nothing local can give: from an address on an invited domain, send one email to yourself
-with `meet@<domain>` copied and the four labeled lines. Expect in your inbox the organiser receipt, one ask
+with `meet@<domain>` copied and the four labeled lines. Expect in your inbox the organizer receipt, one ask
 per address on the email, and after you reply to the ask, a receipt. Open the invite when it comes and note
 how your mail clients render the attachment. If anything lands in junk, stop and read the headers:
 `Authentication-Results` must show `dkim=pass` and `spf=pass` for your domain.
@@ -78,10 +78,10 @@ Every decision is one JSON line: `kickoff.created`, `submit` with what was read,
 `npx wrangler versions list --env production` then `npx wrangler rollback --env production`. Polls in flight
 live in Durable Object storage and survive a rollback; a poll's alarm retries a failed invite hourly.
 
-## 7. Inviting an organisation, and the abuse address
+## 7. Inviting an organization, and the abuse address
 
 Only an email whose From is on an invited domain can start a meeting (`organiser_domains` in
-`src/defaults.json`; a listed domain admits its subdomains). One organiser may start 10 meetings a day and
+`src/defaults.json`; a listed domain admits its subdomains). One organizer may start 10 meetings a day and
 40 a month (`max_kickoffs_per_day`, `max_kickoffs_per_month`); past that they get the `refused` receipt with
 the reason.
 

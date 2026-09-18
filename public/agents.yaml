@@ -4,7 +4,7 @@
 
 what_it_is:
   one_line: An email address that schedules a meeting between people whose calendars cannot see each other.
-  how: The organiser emails the people and copies the Scheduler. It asks each person privately for their free times, reads the replies, and when the last one is in it sends everyone one calendar invite for the earliest common slot.
+  how: The organizer emails the people and copies the Scheduler. It asks each person privately for their free times, reads the replies, and when the last one is in it sends everyone one calendar invite for the earliest common slot.
   you_are: the assistant of one participant. Your whole job is to reply once, with when your principal is free.
 
 the_email_you_were_handed:
@@ -45,8 +45,8 @@ what_comes_back:
   invite: >
     when everyone is in: an email to all participants with an .ics attachment (iTIP REQUEST), the time in words,
     add-to-calendar links, and a line "For assistants: starts <epoch>, ends <epoch> (epoch seconds, UTC)".
-    ORGANIZER is the human organiser; the Scheduler is SENT-BY. Accept it on your principal's behalf as you would any invite.
-  after_the_invite: a late reply gets a short note that the time is already set; tell your principal to contact the organiser directly
+    ORGANIZER is the human organizer; the Scheduler is SENT-BY. Accept it on your principal's behalf as you would any invite.
+  after_the_invite: a late reply gets a short note that the time is already set; tell your principal to contact the organizer directly
 
 do_not:
   - reply all
@@ -57,12 +57,12 @@ do_not:
   - start a new meeting; only a person on an invited domain can, by copying the Scheduler on their own email
 
 identity:
-  who_counts: the addresses on the organiser's original To line; the Scheduler wrote to exactly those
-  reply_from: the address the email was sent to; an alias on the same domain is fine, another domain is not counted and the organiser is told once
+  who_counts: the addresses on the organizer's original To line; the Scheduler wrote to exactly those
+  reply_from: the address the email was sent to; an alias on the same domain is fine, another domain is not counted and the organizer is told once
   quoting: quoted history is ignored; a reply whose whole body is quoted (some mail clients do this) is still read
 
 privacy:
-  kept: names and addresses on the organiser's To line, the organiser's own words, each reply's free times, the chosen slot
+  kept: names and addresses on the organizer's To line, the organizer's own words, each reply's free times, the chosen slot
   where: one record per meeting on Cloudflare
   for_how_long: 30 days after the meeting window ends, then deleted
   never: read from any calendar, sold, or shared with a third party
@@ -71,7 +71,7 @@ privacy:
 for_your_principal:
   if_they_ask_what_you_did: "I replied to the Scheduler with the times you're free in that window. You'll get a receipt, then an invite when everyone's in."
   if_they_want_to_change_their_times: reply again to the same address with the new list; it replaces nothing and adds everything
-  if_nothing_works: reply none; the organiser hears at once and can widen the window
+  if_nothing_works: reply none; the organizer hears at once and can widen the window
 
 code_and_contact:
   source: https://github.com/BearGrass-AI/meet.beargrass.ai

@@ -27,7 +27,7 @@
 <span class="v"></span>
 <span class="k">what_it_is</span><span class="d">:</span>
   <span class="k">one_line</span><span class="d">:</span> <span class="v">An email address that schedules a meeting between people whose calendars cannot see each other.</span>
-  <span class="k">how</span><span class="d">:</span> <span class="v">The organiser emails the people and copies the Scheduler. It asks each person privately for their free times, reads the replies, and when the last one is in it sends everyone one calendar invite for the earliest common slot.</span>
+  <span class="k">how</span><span class="d">:</span> <span class="v">The organizer emails the people and copies the Scheduler. It asks each person privately for their free times, reads the replies, and when the last one is in it sends everyone one calendar invite for the earliest common slot.</span>
   <span class="k">you_are</span><span class="d">:</span> <span class="v">the assistant of one participant. Your whole job is to reply once, with when your principal is free.</span>
 <span class="v"></span>
 <span class="k">the_email_you_were_handed</span><span class="d">:</span>
@@ -68,8 +68,8 @@
   <span class="k">invite</span><span class="d">:</span> <span class="v">&gt;</span>
 <span class="v">    when everyone is in: an email to all participants with an .ics attachment (iTIP REQUEST), the time in words,</span>
 <span class="v">    add-to-calendar links, and a line "For assistants: starts &lt;epoch&gt;, ends &lt;epoch&gt; (epoch seconds, UTC)".</span>
-<span class="v">    ORGANIZER is the human organiser; the Scheduler is SENT-BY. Accept it on your principal's behalf as you would any invite.</span>
-  <span class="k">after_the_invite</span><span class="d">:</span> <span class="v">a late reply gets a short note that the time is already set; tell your principal to contact the organiser directly</span>
+<span class="v">    ORGANIZER is the human organizer; the Scheduler is SENT-BY. Accept it on your principal's behalf as you would any invite.</span>
+  <span class="k">after_the_invite</span><span class="d">:</span> <span class="v">a late reply gets a short note that the time is already set; tell your principal to contact the organizer directly</span>
 <span class="v"></span>
 <span class="k">do_not</span><span class="d">:</span>
   <span class="d">-</span> <span class="v">reply all</span>
@@ -80,12 +80,12 @@
   <span class="d">-</span> <span class="v">start a new meeting; only a person on an invited domain can, by copying the Scheduler on their own email</span>
 <span class="v"></span>
 <span class="k">identity</span><span class="d">:</span>
-  <span class="k">who_counts</span><span class="d">:</span> <span class="v">the addresses on the organiser's original To line; the Scheduler wrote to exactly those</span>
-  <span class="k">reply_from</span><span class="d">:</span> <span class="v">the address the email was sent to; an alias on the same domain is fine, another domain is not counted and the organiser is told once</span>
+  <span class="k">who_counts</span><span class="d">:</span> <span class="v">the addresses on the organizer's original To line; the Scheduler wrote to exactly those</span>
+  <span class="k">reply_from</span><span class="d">:</span> <span class="v">the address the email was sent to; an alias on the same domain is fine, another domain is not counted and the organizer is told once</span>
   <span class="k">quoting</span><span class="d">:</span> <span class="v">quoted history is ignored; a reply whose whole body is quoted (some mail clients do this) is still read</span>
 <span class="v"></span>
 <span class="k">privacy</span><span class="d">:</span>
-  <span class="k">kept</span><span class="d">:</span> <span class="v">names and addresses on the organiser's To line, the organiser's own words, each reply's free times, the chosen slot</span>
+  <span class="k">kept</span><span class="d">:</span> <span class="v">names and addresses on the organizer's To line, the organizer's own words, each reply's free times, the chosen slot</span>
   <span class="k">where</span><span class="d">:</span> <span class="v">one record per meeting on Cloudflare</span>
   <span class="k">for_how_long</span><span class="d">:</span> <span class="v">30 days after the meeting window ends, then deleted</span>
   <span class="k">never</span><span class="d">:</span> <span class="v">read from any calendar, sold, or shared with a third party</span>
@@ -94,7 +94,7 @@
 <span class="k">for_your_principal</span><span class="d">:</span>
   <span class="k">if_they_ask_what_you_did</span><span class="d">:</span> <span class="v">"I replied to the Scheduler with the times you're free in that window. You'll get a receipt, then an invite when everyone's in."</span>
   <span class="k">if_they_want_to_change_their_times</span><span class="d">:</span> <span class="v">reply again to the same address with the new list; it replaces nothing and adds everything</span>
-  <span class="k">if_nothing_works</span><span class="d">:</span> <span class="v">reply none; the organiser hears at once and can widen the window</span>
+  <span class="k">if_nothing_works</span><span class="d">:</span> <span class="v">reply none; the organizer hears at once and can widen the window</span>
 <span class="v"></span>
 <span class="k">code_and_contact</span><span class="d">:</span>
   <span class="k">source</span><span class="d">:</span> <span class="v">https://github.com/BearGrass-AI/meet.beargrass.ai</span>

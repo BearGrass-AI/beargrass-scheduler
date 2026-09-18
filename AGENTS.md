@@ -6,10 +6,10 @@ so you can verify rather than trust.
 
 ## What it is, in one paragraph
 
-One Cloudflare Worker that schedules a meeting by email. An organiser emails the people they want to meet and
+One Cloudflare Worker that schedules a meeting by email. An organizer emails the people they want to meet and
 copies the Scheduler's address. The Worker emails each person privately for their free times, reads the
 replies (a typed list, a screenshot of a calendar, or epoch ranges from an assistant like you), and when the
-last one is in, sends everyone one calendar invite for the earliest common slot, on the organiser's behalf.
+last one is in, sends everyone one calendar invite for the earliest common slot, on the organizer's behalf.
 It never reads a calendar, never emails anyone who was not on the original email, and holds no secrets.
 
 ## Read in this order
@@ -44,15 +44,15 @@ invited one; a reply line identical to one of the ask's own example lines is sti
   and nothing else) and `check.ts: authenticated` (the platform's own `Authentication-Results`, identified by its
   authserv-id, must say DKIM or DMARC passed for exactly the From domain). `index.ts` logs a refusal and sends
   nothing. The envelope sender is never a substitute for the header.
-- **Replies count only from the people asked.** `poll.ts: handle` matches the sender to the organiser's To line;
-  a stranger's mail is reported to the organiser once and never answered. Gmail and Microsoft 365 send-as
+- **Replies count only from the people asked.** `poll.ts: handle` matches the sender to the organizer's To line;
+  a stranger's mail is reported to the organizer once and never answered. Gmail and Microsoft 365 send-as
   keep the envelope on the primary mailbox; `index.ts` trusts a header alias only on the same domain.
 - **Nothing it sends can reach anyone outside the meeting.** `poll.ts: mail` refuses a recipient not on the poll;
   the development environment additionally rewrites every recipient to one inbox and restricts the send
   binding to that address (`wrangler.jsonc`, top level).
 - **Auto-replies and calendar replies are never read.** `index.ts: isAuto`.
 - **Addresses cannot inject calendar lines.** `core.ts: addr` strips whitespace and quotes before any `mailto:`.
-- **One organiser is capped.** `ledger.ts` per organiser mailbox (plus-tags collapse), `check.ts: kickoffCap`,
+- **One organizer is capped.** `ledger.ts` per organizer mailbox (plus-tags collapse), `check.ts: kickoffCap`,
   10 a day and 40 a month by default.
 - **Retention.** One record per meeting in a Durable Object; `poll.ts: alarm` deletes it 30 days after the
   window ends. No calendar is read; screenshots are read once through the Workers AI binding and not stored.
