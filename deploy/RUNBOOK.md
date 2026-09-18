@@ -48,8 +48,9 @@ npx wrangler deploy            # the top-level environment: every recipient rewr
 
 Then the reading nothing local can give: from an address on an invited domain, send one email to yourself
 with `meet@<domain>` copied and the four labeled lines. Expect in your inbox the organizer receipt, one ask
-per address on the email, and after you reply to the ask, a receipt. Open the invite when it comes and note
-how your mail clients render the attachment. If anything lands in junk, stop and read the headers:
+per address on the email, and after you reply to the ask, a receipt. Read the ask and the receipt in every client your
+people use, an Outlook app included: the HTML part carries its line breaks as `<p>` and `<br>`, not as a style,
+because Outlook ignores styles. Open the invite when it comes and note how each client renders the attachment. If anything lands in junk, stop and read the headers:
 `Authentication-Results` must show `dkim=pass` and `spf=pass` for your domain.
 
 ## 4. Production

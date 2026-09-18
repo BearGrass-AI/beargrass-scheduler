@@ -242,6 +242,24 @@ describe('rendering', () => {
     expect(h).toContain('<span style="color:#666">&gt; quoted</span><br><span style="color:#666">&gt; lines</span>');
     expect(h).not.toContain('pre-wrap');
   });
+  it('every template, rendered, becomes one <p> or code block per paragraph and one <br> per inner line; never a CSS whitespace rule', () => {
+    const pack = readFileSync('src/mail/mail.txt', 'utf8'), parts = pack.split(/^### (\S+)\r?\n/m).slice(1);
+    for (let i = 0; i < parts.length; i += 2) {
+      if (parts[i] === 'vision') continue; // a prompt, not a mail
+      const text = C.unwrap(parts[i + 1].replace(/\{\{\w+\}\}/g, 'x')).trim();
+      const blocks: string[] = []; let fence = false, cur: string[] = [];
+      for (const l of text.split('\n')) { if (l.startsWith('```')) fence = !fence; if (!fence && l.trim() === '') { if (cur.length) blocks.push(cur.join('\n')); cur = []; } else cur.push(l); }
+      if (cur.length) blocks.push(cur.join('\n'));
+      const h = html(text);
+      const paragraphs = (h.match(/<p /g) ?? []).length + (h.match(/<div style="font-family:ui-monospace/g) ?? []).length;
+      const fences = blocks.filter(b => b.startsWith('```')).length;
+      const inner = blocks.reduce((n, b) => n + b.split('\n').length - 1 - (b.startsWith('```') ? 2 : 0), 0);
+      expect({ tpl: parts[i], paragraphs }).toEqual({ tpl: parts[i], paragraphs: blocks.length });
+      expect({ tpl: parts[i], br: (h.match(/<br>/g) ?? []).length }).toEqual({ tpl: parts[i], br: inner });
+      expect(h).not.toMatch(/white-space/);
+      void fences;
+    }
+  });
   it('unwraps prose paragraphs and leaves indented, quoted, fenced, table and list lines alone', () => {
     const wrapped = 'The invite is attached. If your mail shows a file instead of\nan invite, use one of these:\n\n    Google: x\n    Outlook: y\n\n1. Give this to your agent. If it only\n   drafts, you hit send.\n2. Then wait.\n\n```json\n{\n  "a": 1\n}\n```\n\n> quoted\n> lines\n\nEnd.';
     expect(C.unwrap(wrapped)).toBe('The invite is attached. If your mail shows a file instead of an invite, use one of these:\n\n    Google: x\n    Outlook: y\n\n1. Give this to your agent. If it only drafts, you hit send.\n2. Then wait.\n\n```json\n{\n  "a": 1\n}\n```\n\n> quoted\n> lines\n\nEnd.');
