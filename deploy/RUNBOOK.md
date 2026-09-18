@@ -25,8 +25,9 @@ Or by hand:
 1. `npx wrangler email sending enable <domain>` and add the printed DKIM and SPF records at the zone.
    Verify: `npx wrangler email sending list` shows the domain enabled.
 2. Email Routing on the domain (dashboard: Email, Email Routing, enable; it adds MX and SPF). Settings:
-   subaddressing **on**. One rule: `meet@<domain>` to the production Worker. Until production exists, point
-   it at the redirected Worker for the first walk.
+   subaddressing **on**. One rule: `meet@<domain>` to a Worker. A rule can only point at a Worker that exists,
+   so run the first deploy in section 3 before this step and point the rule at the redirected Worker; move it
+   to the production Worker in section 4.
    Verify: `dig +short MX <domain>` shows the Cloudflare MX hosts.
 3. DMARC: `_dmarc TXT "v=DMARC1; p=reject;"`. The Worker refuses a forged kickoff itself; this stops it earlier.
 

@@ -50,13 +50,15 @@ You need a Cloudflare account, a domain on it that carries no other mail, and No
 3. In `src/defaults.json`: `organiser_domains` (who may start a meeting), `bot_name`, the default zone and
    hours, the limits. In `src/mail/mail.txt`: the words, keeping the `### name` headers and the
    `{{placeholders}}` you want.
-4. `npx wrangler email sending enable <domain>` and add the DNS it prints. Enable Email Routing on the domain,
-   switch subaddressing on, and add one rule: `<MAILBOX>@<domain>` to this Worker. Publish DMARC at `p=reject`.
-5. `npm test`, then `npx wrangler deploy` for the redirected environment (mails only you), and
-   `npx wrangler deploy --env production` once a walk with your own addresses has passed.
-6. Optional: the screenshot reader runs on Workers AI through the `AI` binding; remove the binding to switch it
-   off and the copy stops offering it. `public/` is a plain page a fork can serve at its own host, or point
-   `PAGE_URL` at a site of your own. `deploy/RUNBOOK.md` is the long form.
+4. `npm test`, then `npx wrangler deploy`: the redirected environment, which can only mail you. The Worker now
+   exists for the next step to point at.
+5. `npx wrangler email sending enable <domain>` and add the DNS it prints. Enable Email Routing on the domain,
+   switch subaddressing on, and add one rule: `<MAILBOX>@<domain>` to the Worker you just deployed. Publish DMARC
+   at `p=reject`. Send yourself one email with the address copied and the four lines; read the receipt and the ask.
+6. `npx wrangler deploy --env production` once a walk with your own addresses has passed, and move the routing
+   rule to the production Worker. Optional: the screenshot reader runs on Workers AI through the `AI` binding;
+   remove the binding to switch it off and the copy stops offering it. `public/` is a plain page a fork can serve
+   at its own host, or point `PAGE_URL` at a site of your own. `deploy/RUNBOOK.md` is the long form.
 
 ## Layout
 

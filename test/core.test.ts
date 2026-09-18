@@ -51,10 +51,10 @@ describe('what the person actually wrote (fresh)', () => {
     expect(C.fresh('Tue Sep 22, 2pm to 5pm\n\n> Mon Sep 21, all day\n> more')).toEqual(['Tue Sep 22, 2pm to 5pm']);
   });
   it.each([
-    'On Tue, Sep 16, 2026 at 6:21 PM Mark wrote:',
+    'On Tue, Sep 16, 2026 at 6:21 PM Sam wrote:',
     'On Wed, Sep 16, 2026 at 8:50 PM Beargrass Scheduler <',
     '<meet+abc@x.org> wrote:',
-    'From: Mark Ulett',
+    'From: Sam Ridge',
     '-----Original Message-----',
     '________________________________',
     'Sent from my iPhone',
@@ -63,13 +63,13 @@ describe('what the person actually wrote (fresh)', () => {
     expect(C.fresh(`Tue Sep 22, 2pm to 5pm\n${marker}\nThu Sep 24, 9am to noon`)).toEqual(['Tue Sep 22, 2pm to 5pm']);
   });
   it('a Gmail attribution wrapped before the address is one marker, not content', () => {
-    expect(C.fresh('Tue Sep 22, 2pm to 5pm\nOn Wed, Sep 16, 2026 at 8:50 PM Beargrass Scheduler for Mark\n<meet+abc@x.org> wrote:\n> old')).toEqual(['Tue Sep 22, 2pm to 5pm']);
+    expect(C.fresh('Tue Sep 22, 2pm to 5pm\nOn Wed, Sep 16, 2026 at 8:50 PM Beargrass Scheduler for Sam\n<meet+abc@x.org> wrote:\n> old')).toEqual(['Tue Sep 22, 2pm to 5pm']);
   });
   it('a quoted attribution line (Apple Mail reply) ends the fresh part', () => {
     expect(C.fresh('Thu Sep 24, 10:30am to noon\n\n> On Sep 16, 2026, at 8:50 PM, X <a@b.c> wrote:\n> Tue Sep 22, 2pm to 5pm')).toEqual(['Thu Sep 24, 10:30am to noon']);
   });
   it('flattens an HTML-only reply', () => {
-    expect(C.textOf(undefined, '<div dir="ltr">Hi Mark,<br>Tue Sep 22, 2pm &amp; 5pm<br></div><p>Thanks</p>')).toBe('Hi Mark,\nTue Sep 22, 2pm & 5pm\n\nThanks\n');
+    expect(C.textOf(undefined, '<div dir="ltr">Hi Sam,<br>Tue Sep 22, 2pm &amp; 5pm<br></div><p>Thanks</p>')).toBe('Hi Sam,\nTue Sep 22, 2pm & 5pm\n\nThanks\n');
     expect(C.textOf('plain', '<b>html</b>')).toBe('plain');
   });
 });
@@ -92,7 +92,7 @@ describe('the shapes people and assistants actually type (normalise)', () => {
   });
   it('a real line that happens to equal one example is still the person\'s: Gmail, 2026-09-17', () => {
     const own = ['Mon Sep 21, 2pm to 5pm', 'Tue Sep 22, 9am to noon', 'Wed Sep 23, all day'];
-    const r = C.parseReply('Mon Sep 21, 1pm to 5pm\nTue Sep 22, 9am to noon\nThu Sep 24, 9am to 5pm\n\n> On Sep 17, Beargrass SchedBot wrote:\n> Hi Mark,', M, 60, own);
+    const r = C.parseReply('Mon Sep 21, 1pm to 5pm\nTue Sep 22, 9am to noon\nThu Sep 24, 9am to 5pm\n\n> On Sep 17, Beargrass SchedBot wrote:\n> Hi Sam,', M, 60, own);
     expect(r.free).toEqual([[L(9, 21, 13), L(9, 21, 17)], [L(9, 22, 9), L(9, 22, 12)], [L(9, 24, 9), L(9, 24, 17)]]);
   });
   it('the ask\'s own example lines are never the person\'s times; a German Outlook reply with no quote marks', () => {
@@ -118,7 +118,7 @@ describe('the shapes people and assistants actually type (normalise)', () => {
 
 describe('a whole reply (parseReply)', () => {
   it('greetings ignored, unreadable kept, everything seen', () => {
-    const r = C.parseReply('Hi Mark,\nTue Sep 22, 2pm to 5pm\nTuesday 2pm-ish\nThanks!', M, 60);
+    const r = C.parseReply('Hi Sam,\nTue Sep 22, 2pm to 5pm\nTuesday 2pm-ish\nThanks!', M, 60);
     expect(r.free).toEqual([[L(9, 22, 14), L(9, 22, 17)]]);
     expect(r.unread).toEqual(['Tuesday 2pm-ish']);
     expect(r.seen).toHaveLength(4);
@@ -126,11 +126,11 @@ describe('a whole reply (parseReply)', () => {
   });
   it('anytime and none on a digit-free line; a line with a digit is a time line', () => {
     expect(C.parseReply('Anytime!', M, 60).free).toEqual(C.blocks(M));
-    expect(C.parseReply('Hi Mark,\nanytime.\nThanks', M, 60).free).toEqual(C.blocks(M));
+    expect(C.parseReply('Hi Sam,\nanytime.\nThanks', M, 60).free).toEqual(C.blocks(M));
     expect(C.parseReply('Anytime Thursday', M, 60)).toMatchObject({ free: [], unread: ['Anytime Thursday'] });
     expect(C.parseReply('Anytime after 2pm', M, 60).free).toEqual([]);
     expect(C.parseReply('None.', M, 60).none).toBe(true);
-    expect(C.parseReply('Hi Mark,\nnone\nsorry', M, 60).none).toBe(true);
+    expect(C.parseReply('Hi Sam,\nnone\nsorry', M, 60).none).toBe(true);
     expect(C.parseReply('None of next week works for me.\nTue Sep 29, 2pm to 5pm', M, 60)).toMatchObject({ none: false, free: [[L(9, 29, 14), L(9, 29, 17)]] });
     expect(C.parseReply('', M, 60)).toEqual({ free: [], unread: [], dropped: [], none: false, seen: [] });
   });
@@ -256,9 +256,9 @@ describe('rendering', () => {
   });
   it('the .ics carries every required property, the organiser as ORGANIZER with the Scheduler as SENT-BY, quoted CN, CRLF, folded at 75 octets', () => {
     const tpl = readFileSync('src/mail/invite.ics', 'utf8');
-    const out = C.ics(tpl, { prodid: 'p', uid: 'abc@x.org', dtstamp: C.stamp(L(9, 16, 12)), dtstart: C.stamp(L(9, 22, 14)), dtend: C.stamp(L(9, 22, 14, 30)), sequence: 1, summary: C.icsText('Intro, part 1; two'), location: 'Zoom', organiser_cn: C.param('Ulett, Mark'), organiser_address: 'mark@x.org', sent_by: C.param('mailto:meet+abc@x.org'), attendees: `ATTENDEE;CN=${C.param('Élodie Ångström-Lindqvist-Müller "the Third"')};ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:someone@example.org` });
+    const out = C.ics(tpl, { prodid: 'p', uid: 'abc@x.org', dtstamp: C.stamp(L(9, 16, 12)), dtstart: C.stamp(L(9, 22, 14)), dtend: C.stamp(L(9, 22, 14, 30)), sequence: 1, summary: C.icsText('Intro, part 1; two'), location: 'Zoom', organiser_cn: C.param('Ridge, Sam'), organiser_address: 'mark@x.org', sent_by: C.param('mailto:meet+abc@x.org'), attendees: `ATTENDEE;CN=${C.param('Élodie Ångström-Lindqvist-Müller "the Third"')};ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:someone@example.org` });
     const unfolded = out.replace(/\r\n /g, '');
-    for (const k of ['VERSION:2.0', 'PRODID:p', 'METHOD:REQUEST', 'UID:abc@x.org', 'DTSTAMP:20260916T180000Z', 'DTSTART:20260922T200000Z', 'DTEND:20260922T203000Z', 'SEQUENCE:1', 'SUMMARY:Intro\\, part 1\\; two', 'LOCATION:Zoom', 'STATUS:CONFIRMED', 'ORGANIZER;CN="Ulett, Mark";SENT-BY="mailto:meet+abc@x.org":mailto:mark@x.org']) expect(unfolded).toContain(k);
+    for (const k of ['VERSION:2.0', 'PRODID:p', 'METHOD:REQUEST', 'UID:abc@x.org', 'DTSTAMP:20260916T180000Z', 'DTSTART:20260922T200000Z', 'DTEND:20260922T203000Z', 'SEQUENCE:1', 'SUMMARY:Intro\\, part 1\\; two', 'LOCATION:Zoom', 'STATUS:CONFIRMED', 'ORGANIZER;CN="Ridge, Sam";SENT-BY="mailto:meet+abc@x.org":mailto:mark@x.org']) expect(unfolded).toContain(k);
     expect(out.replace(/\r\n/g, '')).not.toContain('\n');
     for (const l of out.split('\r\n')) expect(new TextEncoder().encode(l).length).toBeLessThanOrEqual(75);
     expect(out.replace(/\r\n /g, '')).toContain('ATTENDEE;CN="Élodie Ångström-Lindqvist-Müller the Third";ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:someone@example.org');

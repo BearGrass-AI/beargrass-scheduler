@@ -21,7 +21,7 @@ Hours: 9am to 5pm Mountain
 Where: Google Meet
 
 Warmly,
-Mark
+Sam
 ```
 
 ---
