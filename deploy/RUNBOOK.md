@@ -34,7 +34,11 @@ Or by hand:
 ## 2. One-time: the deploy identity
 
 - The screenshot reader needs no secret: it is the `AI` binding in `wrangler.jsonc`, model in
-  `src/defaults.json`, Meta's license applies. Remove the binding to switch the feature off.
+  `src/defaults.json`. Meta's license applies, and Cloudflare enforces it once per account: until someone on
+  the account has sent the model the single word `agree` (dashboard: Workers AI, Playground, pick the model,
+  send `agree`), every call fails with error 5016 and a participant's screenshot gets the "couldn't read that"
+  receipt instead of a reading (measured 2026-09-18). Do it before the first deploy. Remove the binding to
+  switch the feature off.
 - For the GitHub workflow: repository secrets `CLOUDFLARE_API_TOKEN` (Workers Scripts: Edit, Workers Routes:
   Edit on the zone, Account Settings: Read; wrangler names any missing scope on the first run) and
   `CLOUDFLARE_ACCOUNT_ID`.
