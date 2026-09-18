@@ -269,6 +269,11 @@ describe('rendering', () => {
     expect(busyToFree([day(9, 17)], [day(8, 18)])).toEqual([]);
     expect(busyToFree([day(9, 17)], [day(8, 10), day(9.5, 12)])).toEqual([day(12, 17)]);
   });
+  it('every {{placeholder}} a template names is one the poll supplies', () => {
+    const pack = readFileSync('src/mail/mail.txt', 'utf8'), src = readFileSync('src/poll.ts', 'utf8') + readFileSync('src/core.ts', 'utf8'); // links() in core supplies the calendar links
+    const supplied = new Set([...src.matchAll(/\b([a-z_][a-z0-9_]*):/g)].map(m => m[1]));
+    for (const k of new Set([...pack.matchAll(/\{\{(\w+)\}\}/g)].map(m => m[1]))) expect({ placeholder: k, supplied: supplied.has(k) }).toEqual({ placeholder: k, supplied: true });
+  });
   it('unwraps prose paragraphs and leaves indented, quoted, fenced, table and list lines alone', () => {
     const wrapped = 'The invite is attached. If your mail shows a file instead of\nan invite, use one of these:\n\n    Google: x\n    Outlook: y\n\n1. Give this to your agent. If it only\n   drafts, you hit send.\n2. Then wait.\n\n```json\n{\n  "a": 1\n}\n```\n\n> quoted\n> lines\n\nEnd.';
     expect(C.unwrap(wrapped)).toBe('The invite is attached. If your mail shows a file instead of an invite, use one of these:\n\n    Google: x\n    Outlook: y\n\n1. Give this to your agent. If it only drafts, you hit send.\n2. Then wait.\n\n```json\n{\n  "a": 1\n}\n```\n\n> quoted\n> lines\n\nEnd.');

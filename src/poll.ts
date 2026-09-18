@@ -104,7 +104,7 @@ export class Poll extends DurableObject<Env> {
     await this.save();
     const z = st.meeting.zone, all = st.subs[s.from];
     const inserts = {
-      read_block: reading.fromShot ? C.render(T['read-block'], { lines: reading.fromShot }) : '',
+      read_block: reading.fromShot ? C.render(T['read-block'], { ...this.vars(), lines: reading.fromShot }) : '', // the block names the hours; it needs the poll's variables
       unread_block: reading.unread.length ? C.render(T['unread-block'], { ...this.vars(), unread_lines: reading.unread.join('\n    ') }) : '',
       dropped_block: this.droppedBlock(reading),
       replyall_line: replyAll ? T['replyall-line'] : '',
