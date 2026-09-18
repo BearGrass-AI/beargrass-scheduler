@@ -22,7 +22,7 @@ msg() { # file, from-header, to-header, cc-header, subject, msgid, references(sp
     printf 'MIME-Version: 1.0\nContent-Type: text/plain; charset=utf-8\n\n%s\n' "$8"; } > "$1"; }
 N0=$(sends); K="kickoff-$RUN@beargrassai.com"; ROOT="root-$RUN@beargrassai.com"
 
-echo "1  kickoff inside an existing thread, three people on To, a note-taker on CC (ruling 1: CC is not asked)"
+echo "1  kickoff inside an existing thread, three people on To, a note-taker on CC (CC is not asked)"
 sed "s/kickoff-1@beargrassai.com/$K/; s/^References:.*/References: <$ROOT> <older-$RUN@example.org>/; s/^Cc: $MEET/Cc: $MEET, notes@example.org/" test/fixtures/kickoff.eml > /tmp/bs-k1.eml
 printf '\nOn Wed, Sep 16, 2026 at 1:38 PM Someone <someone@example.org> wrote:\n> HISTORY-MARKER the whole thread used to ride along\n> From: Someone\n' >> /tmp/bs-k1.eml
 inject $ORG $MEET /tmp/bs-k1.eml; session
@@ -48,11 +48,11 @@ expect 7 "Chris's receipt"
 echo "3c Zed: the REAL Apple Mail message that failed on 2026-09-17, body quoted with '> ' (fixture replay)"
 inject $Z "$SCHED" test/fixtures/clients/applemail-quoted-body.eml
 expect 8 "Zed's receipt"; saw "Got it, Zed. 2 free times" "the quoted-own-text body was read"
-echo "3t Erin writes 'Thanks!' to the private ask (ruling 2: a direct reply is always answered)"
+echo "3t Erin writes 'Thanks!' to the private ask (a direct reply is always answered)"
 msg /tmp/bs-t.eml "Erin <$A>" "$SCHED" "" "Re: Introductions" "t-$RUN@beargrassai.com" "$K" "Thanks!"
 inject $A "$SCHED" /tmp/bs-t.eml
 expect 9 "the couldn't-read receipt quoting what it saw"; saw "couldn't use any times from it" "Erin was answered, her times kept"; saw "Thanks!" "what it saw is quoted back"
-echo "3m Erin adds one more line (ruling: merge and echo the whole list)"
+echo "3m Erin adds one more line (merge and echo the whole list)"
 msg /tmp/bs-m.eml "Erin <$A>" "$SCHED" "" "Re: Introductions" "m-$RUN@beargrassai.com" "$K" "Tue Sep 29, 9am to 10am"
 inject $A "$SCHED" /tmp/bs-m.eml
 expect 10 "Erin's merged receipt"; saw "Got it, Erin. 4 free times" "the earlier three are kept"; saw "Your list now, in Mountain:" "the whole list echoed"
@@ -66,13 +66,13 @@ Gesendet: Mittwoch, 16. September 2026
     Wed Sep 23, all day"
 inject $B "$SCHED" /tmp/bs-g.eml
 expect 11 "Chris's receipt"; saw "Got it, Chris. 10 free times" "anytime kept, the examples not read as his"
-echo "3u a stranger writes to the poll address, twice (ruling 2: the organiser hears once)"
+echo "3u a stranger writes to the poll address, twice (the organiser hears once)"
 msg /tmp/bs-u.eml "Someone <someone@example.org>" "$SCHED" "" "Re: Introductions" "u-$RUN@example.org" "$K" "Tue Sep 22, 2pm to 5pm"
 inject someone@example.org "$SCHED" /tmp/bs-u.eml
 expect 12 "one note to the organiser"; saw "from someone@example.org, which matches nobody" "the unknown-sender note"
 inject someone@example.org "$SCHED" /tmp/bs-u.eml
 expect 12 "no second note"
-echo "3d Mark answers on the THREAD by Reply-All (In-Reply-To unknown, References = root, kickoff, unknown), Apple Mail quote"
+echo "3d the organiser answers on the THREAD by Reply-All (In-Reply-To unknown, References = root, kickoff, unknown), Apple Mail quote"
 msg /tmp/bs-r4.eml "Mark Ulett <$ORG>" "$A, $B, $Z" "$MEET" "Re: Introductions" "r4-$RUN@beargrassai.com" "$ROOT $K later-$RUN@example.org" "Thu Sep 24, 10:30am to noon
 Mon Sep 28, 9am to 5pm
 
@@ -101,7 +101,7 @@ echo "X5 the same reply delivered a second time under the same Message-ID: read 
 inject $ORG "$SCHED" /tmp/bs-r1.eml
 expect 15 "no second already-set"
 
-echo "5  second poll: Erin says none (HTML-only, the bare word), then corrects; Mark answers; the invite goes out (ruling 2: none is not fatal)"
+echo "5  second poll: Erin says none (HTML-only, the bare word), then corrects; the organiser answers; the invite goes out (none is not fatal)"
 msg /tmp/bs-k2.eml "Mark Ulett <$ORG>" "Erin <$A>" "$MEET" "Coffee" "kickoff2-$RUN@beargrassai.com" "" "Let's find a time."
 inject $ORG $MEET /tmp/bs-k2.eml
 ID2=$(grep -o 'meet+[a-z2-7]*@' "$LOG" | tail -1 | tr -d '@'); S2="$ID2@beargrass.ai"

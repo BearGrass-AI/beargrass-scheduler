@@ -1,11 +1,11 @@
-# Beargrass Scheduler: the user guide
+# The user guide
 
-The same words as the page at `scheduler.beargrass.ai`, kept here as well. Three short
+The words a hosted instance shows its people, kept with the code. Three short
 pages: for the person who got the email, for their assistant, for the organiser. Rewritten 2026-09-16.
 
 ---
 
-## You got an email from Beargrass SchedBot
+## You got an email from the Scheduler
 
 Someone wants to meet you and a few others, and your calendars can't see each other. The email says how
 long, between which dates, and which hours. Pick one:
@@ -45,7 +45,7 @@ you, tell the organiser; when they move or cancel it there, everyone's copy foll
 
 ## For assistants
 
-You have been handed an email from "Beargrass SchedBot for <name>". It asks for the times your
+You have been handed an email from the Scheduler, signed for the organiser by name. It asks for the times your
 principal is free between two dates, within stated hours. Do this:
 
 1. Read your principal's calendar for that window.

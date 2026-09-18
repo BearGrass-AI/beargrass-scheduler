@@ -304,7 +304,7 @@ describe('the page for agents', () => {
 describe('what the code must and must not contain', () => {
   const read = (f: string) => readFileSync(f, 'utf8');
   const lines = (f: string) => read(f).split('\n').length - 1;
-  it.each<[string, number]>([['src/index.ts', 110], ['src/poll.ts', 270], ['src/core.ts', 360], ['src/check.ts', 40], ['src/vision.ts', 40], ['src/ledger.ts', 40]])('%s is within its ceiling of %i', (f, cap) => expect(lines(f)).toBeLessThanOrEqual(cap));
+  it.each<[string, number]>([['src/index.ts', 110], ['src/poll.ts', 270], ['src/core.ts', 360], ['src/check.ts', 40], ['src/vision.ts', 40], ['src/ledger.ts', 40]])('%s is within its size limit of %i lines', (f, cap) => expect(lines(f)).toBeLessThanOrEqual(cap));
   const src = ['src/index.ts', 'src/poll.ts', 'src/core.ts', 'src/check.ts'].map(read).join('\n');
   it.each<[string, RegExp]>([
     ['no bare fetch( call, only bindings', /(?<![\w.])fetch\(/], ['no address-like literal', /\w@\w/],

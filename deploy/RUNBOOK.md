@@ -1,18 +1,20 @@
-# Runbook: from this repo to a live Beargrass Scheduler
+# Runbook: from this repo to a live Scheduler on your own domain
 
-For the operator (Mark) or a deploy agent acting on his word in the turn. Every step here changes the
-shared world; none is run by a build agent. Written 2026-09-16. Commands assume the repo root.
+For whoever runs it. Every step here changes a live account; none is automated on purpose. Commands assume
+the repo root. Names below (`beargrass.ai`, `meet`) are the reference deployment's; yours go in
+`wrangler.jsonc` and `src/defaults.json`.
 
 ## 0. What "live" means
 
-- Mail domain `beargrass.ai`: Email Routing delivers `meet@` and `meet+<id>@` to the Worker; Email Sending
-  lets the Worker send from `meet+<id>@beargrass.ai`. The apex carries no other mail, so no other system
-  is affected. `beargrassai.com` is untouched and shares no reputation.
-- Page host `scheduler.beargrass.ai`: a custom domain on the production Worker; static assets only.
-- Two Workers: `beargrass-scheduler` (the redirected environment; can only mail `mark@beargrassai.com`)
-  and `beargrass-scheduler-production`.
+- A mail domain that carries no other mail: Email Routing delivers `meet@` and `meet+<id>@` to the Worker;
+  Email Sending lets the Worker send from `meet+<id>@<domain>`. Because the domain carries nothing else, its
+  reputation is the Scheduler's alone.
+- Two Workers from one config: the top-level environment (every recipient rewritten to `REDIRECT_ALL_TO`,
+  and the send binding itself restricted to that one address, so it can only ever mail you) and
+  `--env production`, the only one that mails other people.
+- Optionally a host for the pages in `public/`, or a separate site with `PAGE_URL` pointing at it.
 
-## 1. One-time: the mail domain (dashboard or CLI, ~15 minutes)
+## 1. One-time: the mail domain (~15 minutes)
 
 ```bash
 sh deploy/setup.sh            # runs the enables below and prints the DNS records to add
@@ -20,91 +22,78 @@ sh deploy/setup.sh            # runs the enables below and prints the DNS record
 
 Or by hand:
 
-1. `npx wrangler email sending enable beargrass.ai` → add the printed DKIM/SPF records at the zone.
-   Verify: `npx wrangler email sending list` shows `beargrass.ai` verified.
-2. Email Routing on `beargrass.ai` (dashboard → Email → Email Routing → enable; it adds MX + SPF).
-   Settings → subaddressing **on**. One rule: `meet@beargrass.ai` → Worker `beargrass-scheduler-production`.
-   Until production exists, point the rule at `beargrass-scheduler` for the redirected walk.
-   Verify: `dig +short MX beargrass.ai` shows the Cloudflare MX hosts.
-3. DMARC on `beargrass.ai`: `_dmarc TXT "v=DMARC1; p=reject;"` (published; measured 2026-09-17).
-   Also tighten `beargrassai.com` from `p=none` to `p=quarantine`: the Worker already refuses a forged
-   kickoff, this stops it earlier.
+1. `npx wrangler email sending enable <domain>` and add the printed DKIM and SPF records at the zone.
+   Verify: `npx wrangler email sending list` shows the domain enabled.
+2. Email Routing on the domain (dashboard: Email, Email Routing, enable; it adds MX and SPF). Settings:
+   subaddressing **on**. One rule: `meet@<domain>` to the production Worker. Until production exists, point
+   it at the redirected Worker for the first walk.
+   Verify: `dig +short MX <domain>` shows the Cloudflare MX hosts.
+3. DMARC: `_dmarc TXT "v=DMARC1; p=reject;"`. The Worker refuses a forged kickoff itself; this stops it earlier.
 
-## 2. One-time: secrets and the deploy identity
+## 2. One-time: the deploy identity
 
-- Screenshot reader: no secret. It runs on Workers AI through the `AI` binding in `wrangler.jsonc`
-  (model in `src/defaults.json`; Meta's license applies). Remove the binding to switch it off.
-- For the GitHub workflow: repo secrets `CLOUDFLARE_API_TOKEN` (a token with Workers Scripts: Edit,
-  Workers Routes: Edit on the `beargrass.ai` zone, Account Settings: Read; wrangler names any missing
-  scope on the first run) and `CLOUDFLARE_ACCOUNT_ID`.
+- The screenshot reader needs no secret: it is the `AI` binding in `wrangler.jsonc`, model in
+  `src/defaults.json`, Meta's license applies. Remove the binding to switch the feature off.
+- For the GitHub workflow: repository secrets `CLOUDFLARE_API_TOKEN` (Workers Scripts: Edit, Workers Routes:
+  Edit on the zone, Account Settings: Read; wrangler names any missing scope on the first run) and
+  `CLOUDFLARE_ACCOUNT_ID`.
 
 ## 3. First deploy, redirected
 
 ```bash
 npm ci && npm test
-npx wrangler deploy            # the top-level environment: every recipient rewritten to mark@beargrassai.com
+npx wrangler deploy            # the top-level environment: every recipient rewritten to REDIRECT_ALL_TO
 ```
 
-Then the real-mail reading nothing local can give: from `mark@beargrassai.com`, send one email to yourself
-with `meet@beargrass.ai` on CC and the four labeled lines. Expect in your inbox: the organiser receipt,
-one ask per address on the kickoff, and after you reply to the ask, the receipt. Open the invite when it
-comes and note how Apple Mail and Gmail render the attachment. If anything lands in junk, stop and read the
-headers (`Authentication-Results` must show dkim=pass and spf=pass for `beargrass.ai`).
+Then the reading nothing local can give: from an address on an invited domain, send one email to yourself
+with `meet@<domain>` copied and the four labeled lines. Expect in your inbox the organiser receipt, one ask
+per address on the email, and after you reply to the ask, a receipt. Open the invite when it comes and note
+how your mail clients render the attachment. If anything lands in junk, stop and read the headers:
+`Authentication-Results` must show `dkim=pass` and `spf=pass` for your domain.
 
 ## 4. Production
 
 ```bash
-npx wrangler deploy --env production     # or: push to main, the workflow runs this
+npx wrangler deploy --env production     # or push to main and let the workflow run it
 ```
 
-Move the routing rule to `beargrass-scheduler-production`. Walk it once with the plus-addresses
-(`mark+erin@`, `mark+chris@`, `mark+zed@beargrassai.com`) as the participants; production mails only the
-addresses on the kickoff, and those are all yours. Check the page at `https://scheduler.beargrass.ai/`.
+Move the routing rule to the production Worker. Walk it once with a few of your own addresses (plus-tags on
+one mailbox work: `you+a@`, `you+b@`) as the participants; production mails only the addresses on the
+kickoff, and those are all yours.
 
 ## 5. The first real meeting
 
-Reply on the thread, CC `meet@beargrass.ai`, the four lines. The one instrument still unread is an Outlook
-attendee: inline invite or file. The add-to-Outlook link is beneath either way.
+Reply on a real thread, copy `meet@<domain>`, add the four lines. Watch the production log:
+
+```bash
+npx wrangler tail --env production --format json
+```
+
+Every decision is one JSON line: `kickoff.created`, `submit` with what was read, `invite.sent`,
+`kickoff.rejected` with the header that failed. Read it once with real mail clients before inviting anyone else.
 
 ## 6. Rollback
 
-`npx wrangler versions list --env production` then `npx wrangler rollback --env production`. Polls in
-flight live in Durable Object storage and survive a rollback; a poll's alarm retries a failed invite hourly.
+`npx wrangler versions list --env production` then `npx wrangler rollback --env production`. Polls in flight
+live in Durable Object storage and survive a rollback; a poll's alarm retries a failed invite hourly.
 
-## 7. What is deliberately not automated
+## 7. Inviting an organisation, and the abuse address
+
+Only an email whose From is on an invited domain can start a meeting (`organiser_domains` in
+`src/defaults.json`; a listed domain admits its subdomains). One organiser may start 10 meetings a day and
+40 a month (`max_kickoffs_per_day`, `max_kickoffs_per_month`); past that they get the `refused` receipt with
+the reason.
+
+- **Add a domain:** confirm with `dig +short TXT _dmarc.<theirs>` that they publish DMARC (their kickoffs must
+  authenticate for exactly the From domain); add it to the list; run the tests; deploy. Send them
+  `docs/for-your-mail-admin.md` so their gateway allow-lists your sending domain.
+- **Take a domain off:** remove it from the list; deploy. Open polls run to their end; no new ones start.
+- **A meeting's record before its time:** the record removes itself 30 days after the window; there is no
+  command to do it sooner yet, so the answer to a removal request is the date it expires.
+- **Abuse address:** route `meet-abuse@<domain>` to a person, once, in the dashboard. Name it on your page and
+  in the mail-admin note.
+
+## 8. What is deliberately not automated
 
 The enables, DNS, secrets and the routing rule: one-time acts on the account, done by a human once. The
-deploy: by the workflow on push to `main`, which is the human's keystroke, or by hand.
-
-## 8. Inviting an organisation, and the abuse address
-
-Only an email whose From is on an invited domain can start a meeting (`organiser_domains` in `src/defaults.json`;
-a listed domain admits its subdomains). One organiser may start 10 meetings a day and 40 a month
-(`max_kickoffs_per_day`, `max_kickoffs_per_month`); past that they get the `refused` receipt with the reason.
-
-- **Add a domain:** confirm with `dig +short TXT _dmarc.<domain>` that the domain publishes DMARC (their kickoffs
-  must authenticate for exactly the From domain); add it to the list; run the tests; deploy. Send the organiser
-  `docs/for-your-mail-admin.md` so their gateway allow-lists `beargrass.ai`.
-- **Take a domain off:** remove it from the list; deploy. Open polls run to their end; no new ones start.
-- **A meeting's record before its time:** the poll id is the tag in the address the participants replied to. The
-  record removes itself 30 days after the window; there is no command to do it sooner yet, so the answer to a
-  removal request is the date it expires.
-- **Abuse address:** `meet-abuse@beargrass.ai` is an Email Routing rule to the operator's own inbox, set in the
-  dashboard once. It is named on the page and in the mail-admin note.
-
-## 9. The page behind Cloudflare Access (preview gate)
-
-Until the invited organisations have seen and approved the page, it sits behind Access: one self-hosted
-application over `beargrass.ai`, `www.beargrass.ai` and `scheduler.beargrass.ai` (all three serve the same
-file), one policy allowing emails ending in an invited domain, one-time code by email. Nothing in the mail
-points anyone at the page, so participants are unaffected.
-
-```bash
-CLOUDFLARE_API_TOKEN=<Access: Apps and Policies: Edit>  CLOUDFLARE_ACCOUNT_ID=<id>  sh deploy/access.sh
-```
-
-Needs Zero Trust enabled on the account once (free plan is enough) with One-time PIN as a login method, which
-new accounts have by default. The same two objects can be made in the dashboard: Zero Trust → Access →
-Applications → Add → Self-hosted; three public hostnames; a policy "Allow" with "Emails ending in" for each
-invited domain. To lift the gate: remove the application. The order on launch day: the apex redirect rule off,
-the Access application on, then the production deploy, then the repo flip, then the reply with the links.
+deploy: by the workflow on push to `main`, which is a human's keystroke, or by hand.

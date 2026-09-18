@@ -5,7 +5,7 @@
   // environment without that variable. Running your own: change DOMAIN, MAILBOX, PRODID, REDIRECT_ALL_TO, the
   // production route, and the invited domains in src/defaults.json.
   // The mail domain is a separate domain from the operator's ordinary mail, so its reputation is its own.
-  // The page lives at scheduler.beargrass.ai in production only; public/ is served as static assets without invoking the Worker.
+  // public/ is served as static assets without invoking the Worker, on whatever host a route names; PAGE_URL may point elsewhere.
   // No secrets. The screenshot reader is Workers AI through the AI binding; remove the binding to switch the feature off.
   "name": "beargrass-scheduler",
   "main": "src/index.ts",

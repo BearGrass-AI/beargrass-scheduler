@@ -36,7 +36,7 @@ still missing, and I'll stop waiting on {{expires_human}}.
 
 Asked: {{seen_list}}
 
-Beargrass SchedBot, for {{organiser_first}}
+{{bot}}, for {{organiser_first}}
 ```
 
 ---
@@ -48,7 +48,7 @@ Beargrass SchedBot, for {{organiser_first}}
 
 What I saw: {{seen_list}}
 
-Beargrass SchedBot, for {{organiser_first}}
+{{bot}}, for {{organiser_first}}
 ```
 
 ---
@@ -58,7 +58,7 @@ Beargrass SchedBot, for {{organiser_first}}
 ```
 Hi {{first}},
 
-Beargrass SchedBot here. {{organiser_first}} asked me to find {{length}} minutes with {{others}},
+{{bot}} here. {{organiser_first}} asked me to find {{length}} minutes with {{others}},
 between {{window_start}} and {{window_end}}, {{hours}} {{zone_name}}.
 
 Next steps for humans:
@@ -76,7 +76,7 @@ No agent handy? Just reply with your free times, one per line, like
 Reply to this email; only I see it. {{organiser_first}} sees what you send, as with a Doodle. Times are
 read in {{zone_name}} unless you add a zone, like "2pm to 5pm PT". Nothing works? Reply "none".
 
-Beargrass SchedBot, for {{organiser_first}}
+{{bot}}, for {{organiser_first}}
 
 Next steps for agents. The contract, as JSON:
 
@@ -113,7 +113,7 @@ Your list now, in {{zone_name}}: {{your_times}}
 {{read_block}}{{unread_block}}{{dropped_block}}
 Send more times any time and I'll add them. When the last one lands, the invite goes out.
 
-Beargrass SchedBot, for {{organiser_first}}
+{{bot}}, for {{organiser_first}}
 ```
 
 ---
@@ -174,7 +174,7 @@ Small thing: that reply went to everyone. Next time hit Reply, not Reply All, an
 One per line, like "{{ex1}}, 2pm to 5pm". Or hand my earlier email to your assistant and say
 "reply with every time I'm free."{{shot_line}} Or reply "none" if nothing works.
 
-Beargrass SchedBot, for {{organiser_first}}
+{{bot}}, for {{organiser_first}}
 ```
 
 ---
@@ -185,7 +185,7 @@ Beargrass SchedBot, for {{organiser_first}}
 {{first}}, I got your reply but it had no times in it, so nothing changed. When you're ready, reply
 with your free times, one per line like "{{ex1}}, 2pm to 5pm", or "none" if nothing works.
 
-Beargrass SchedBot, for {{organiser_first}}
+{{bot}}, for {{organiser_first}}
 ```
 
 ---
@@ -196,7 +196,7 @@ Beargrass SchedBot, for {{organiser_first}}
 Noted, {{first}}: nothing in that window works for you. I've told {{organiser_first}}. If that changes,
 reply with times, one per line, and I'll swap them in.
 
-Beargrass SchedBot, for {{organiser_first}}
+{{bot}}, for {{organiser_first}}
 ```
 
 ---
@@ -211,7 +211,7 @@ here's who's free when so far:
 
 If you'd rather widen the dates or go without {{first}}, start a fresh email and CC me again.
 
-Beargrass SchedBot, for {{organiser_first}}
+{{bot}}, for {{organiser_first}}
 ```
 
 ---
@@ -223,7 +223,7 @@ Beargrass SchedBot, for {{organiser_first}}
 your To line, so I didn't count it. If that's one of the {{count}} replying from another address, ask
 them to reply from the address the ask went to, or start a fresh email with the address they use.
 
-Beargrass SchedBot, for {{organiser_first}}
+{{bot}}, for {{organiser_first}}
 ```
 
 ---
@@ -234,7 +234,7 @@ Beargrass SchedBot, for {{organiser_first}}
 {{first}}, this one's already booked: {{slot_human}}. If that's changed for you, tell
 {{organiser_first}} directly; the event sits on {{organiser_first}}'s calendar, and moving it there updates everyone.
 
-Beargrass SchedBot, for {{organiser_first}}
+{{bot}}, for {{organiser_first}}
 ```
 
 ---
@@ -248,7 +248,7 @@ line like "{{ex1}}, 2pm to 5pm"; or hand it to your assistant.{{shot_line}} "non
 
 {{n_in}} of {{count}} are in.
 
-Beargrass SchedBot, for {{organiser_first}}
+{{bot}}, for {{organiser_first}}
 ```
 
 ---
@@ -261,7 +261,7 @@ once; I won't again. Here's who's free when so far:
 
     {{table}}
 
-Beargrass SchedBot, for {{organiser_first}}
+{{bot}}, for {{organiser_first}}
 ```
 
 ---
@@ -272,7 +272,7 @@ Beargrass SchedBot, for {{organiser_first}}
 {{first}}, this one closed: {{reason}}. If you still want to meet, ask {{organiser_first}} to start a
 fresh email and CC me again.
 
-Beargrass SchedBot, for {{organiser_first}}
+{{bot}}, for {{organiser_first}}
 ```
 
 ---
@@ -287,7 +287,7 @@ Beargrass SchedBot, for {{organiser_first}}
 
 To try again, start a fresh email with new dates and CC me.
 
-Beargrass SchedBot, for {{organiser_first}}
+{{bot}}, for {{organiser_first}}
 ```
 
 ---
@@ -309,7 +309,7 @@ an invite, use one of these:
 
 For assistants: starts {{epoch_start}}, ends {{epoch_end}} (epoch seconds, UTC).
 
-Beargrass SchedBot, for {{organiser_first}}
+{{bot}}, for {{organiser_first}}
 ```
 
 ---
@@ -324,7 +324,7 @@ it. Here's who's free when:
 
 Your call from here: pick a time and send the invite yourself, or start a fresh email and CC me again.
 
-Beargrass SchedBot, for {{organiser_first}}
+{{bot}}, for {{organiser_first}}
 ```
 
 ---
@@ -340,7 +340,7 @@ Beargrass SchedBot, for {{organiser_first}}
 Anyone can still reply with more times and I'll try again. Or pick a time and send the invite
 yourself, or start a fresh email with a wider window and CC me again.
 
-Beargrass SchedBot, for {{organiser_first}}
+{{bot}}, for {{organiser_first}}
 ```
 
 ---
