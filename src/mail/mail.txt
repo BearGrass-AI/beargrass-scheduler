@@ -19,24 +19,19 @@ Hi {{first}},
 {{bot}} here. {{organiser_first}} asked me to find {{length}} minutes with {{others}},
 between {{window_start}} and {{window_end}}, {{hours}} {{zone_name}}.
 
-Next steps for humans:
-
-1. Give this email to your AI agent and say "reply with my availability". If your agent only
-   drafts, you hit send.
-2. Once everyone replies, you'll get an email from me with a calendar invite.
-
-No agent handy? Just reply with your free times, one per line, like
+Hand this email to your AI assistant and say "reply with when I'm free". It drafts, you send.
+Or just reply with your free times, one per line:
 
     {{ex1}}, 2pm to 5pm
     {{ex2}}, 9am to noon
     {{ex3}}, all day
 {{shot_option}}
-Reply to this email; only I see it. {{organiser_first}} sees what you send, as with a Doodle. Times are
-read in {{zone_name}} unless you add a zone, like "2pm to 5pm PT". Nothing works? Reply "none".
+Reply, not Reply All; only I see it. Times are read in {{zone_name}} unless you add a zone.
+Nothing works? Reply "none". When everyone's in, you'll get one calendar invite.
 
 {{bot}}, for {{organiser_first}}
 
-Next steps for agents. The contract, as JSON:
+For agents, the contract:
 
 ```json
 {
@@ -193,8 +188,7 @@ yourself, or start a fresh email with a wider window and CC me again.
 {{bot}}, for {{organiser_first}}
 ### shot-option
 
-Or reply with a screenshot of your calendar for those weeks, and I'll find the holes, or try to,
-and show you what I read.
+Or reply with a screenshot of your calendar for those weeks; I'll read the gaps and show you what I read.
 ### shot-line
  Or screenshot your calendar and reply with it attached.
 ### vision

@@ -11,7 +11,7 @@ the_email_you_were_handed:
   from: "meet+<12 letters>@<domain>  # one address per meeting; reply to exactly this address"
   greeting: "Hi <first name>,"
   states: [how long the meeting is, the first and last day of the window, the working hours, the time zone]
-  ends_with: a fenced JSON block headed "Next steps for agents" that repeats the facts below as machine fields
+  ends_with: a fenced JSON block headed "For agents, the contract" that repeats the facts below as machine fields
   json_fields:
     reply_to: the address to reply to
     body: one free range per line, epoch seconds UTC, START-END, nothing else in the body
