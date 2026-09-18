@@ -7,7 +7,7 @@ const esc = (s: string) => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;'
 const link = (s: string) => s.replace(/https?:\/\/[^\s<]+/g, url => `<a href="${url}">${url}</a>`);
 const line = (l: string) => link(esc(l).replace(/^( +)/, m => '&nbsp;'.repeat(m.length)).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>'));
 
-const FONT = 'font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.55;max-width:640px'; // the system face on each platform; Arial where there is none
+const FONT = "font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:16px;line-height:1.55;max-width:640px"; // the system face on each platform; Arial where there is none
 const MONO = 'font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px;line-height:1.45;background:#f4f4f2;padding:10px 12px;border-radius:6px';
 
 export function html(text: string): string {

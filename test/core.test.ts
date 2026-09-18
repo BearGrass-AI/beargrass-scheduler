@@ -242,6 +242,7 @@ describe('rendering', () => {
     expect(h).toContain('<span style="color:#666">&gt; quoted</span><br><span style="color:#666">&gt; lines</span>');
     expect(h).not.toContain('pre-wrap');
     expect(html('**By hand:** reply')).toContain('<b>By hand:</b> reply');
+    expect(html('x')).toMatch(/^<div style="[^"]*max-width:640px"><p /); // the style attribute closes where it should: no double quote inside it
   });
   it('every template, rendered, becomes one <p> or code block per paragraph and one <br> per inner line; never a CSS whitespace rule', () => {
     const pack = readFileSync('src/mail/mail.txt', 'utf8'), parts = pack.split(/^### (\S+)\r?\n/m).slice(1);
