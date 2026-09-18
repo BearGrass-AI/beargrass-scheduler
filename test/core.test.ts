@@ -320,7 +320,8 @@ describe('the screenshot reader', () => {
   it('maps each image to one call and fails soft', async () => {
     const calls: unknown[] = [], ai = { run: async (model: string, input: unknown) => { calls.push([model, input]); return { response: calls.length === 1 ? 'Tue Sep 22, 2pm to 5pm' : 'unreadable' }; } };
     expect(await readShots(ai, 'm', [{ type: 'image/png', data: 'AAAA' }, { type: 'image/png', data: 'BBBB' }], 'ask')).toBe('Tue Sep 22, 2pm to 5pm');
-    expect(calls).toEqual([['m', { prompt: 'ask', image: 'AAAA', max_tokens: 1000 }], ['m', { prompt: 'ask', image: 'BBBB', max_tokens: 1000 }]]);
+    const call = (data: string) => ['m', { messages: [{ role: 'user', content: [{ type: 'text', text: 'ask' }, { type: 'image_url', image_url: { url: `data:image/png;base64,${data}` } }] }], max_tokens: 1000 }];
+    expect(calls).toEqual([call('AAAA'), call('BBBB')]);
     expect(await readShots(undefined, 'm', [{ type: 'image/png', data: 'AAAA' }], 'ask')).toBeNull();
     expect(await readShots({ run: async () => ({}) }, 'm', [{ type: 'image/png', data: 'AAAA' }], 'ask')).toBeNull();
     await expect(readShots({ run: async () => { throw new Error('down'); } }, 'm', [{ type: 'image/png', data: 'AAAA' }], 'ask')).rejects.toThrow('down');
