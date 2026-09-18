@@ -4,7 +4,7 @@ import { DurableObject } from 'cloudflare:workers';
 import * as C from './core';
 import { sanity } from './check';
 import { html } from './html';
-import { readShots, type Shot, type Vision } from './vision';
+import { readShots, busyToFree, type Shot, type Vision } from './vision';
 import type { Ledger } from './ledger';
 import D from './defaults.json';
 import inviteIcs from './mail/invite.ics';
@@ -131,9 +131,10 @@ export class Poll extends DurableObject<Env> {
     const ask = C.render(T.vision, { ...v, first: who.first });
     const lines = await readShots(this.env.AI as unknown as Vision | undefined, D.vision_model, s.shots, ask).catch(err => { log(st.id, 'vision.failed', { error: String(err) }); return null; });
     if (!lines) return text;
-    const shot = C.parseReply(lines, st.meeting, D.max_lines, own);
-    if (shot.none) return { ...text, unread: [...text.unread, lines.trim()] }; // a model saying "none" is an unread screenshot, not a person's none
-    return { ...shot, fromShot: lines.trim().split('\n').join('\n    ') };
+    const shot = C.parseReply(lines, st.meeting, D.max_lines, own); // the model lists what is busy
+    const busy = shot.none ? [] : shot.free;
+    if (!shot.none && !busy.length) return { ...text, unread: [...text.unread, lines.trim()] }; // nothing parsed as a block: an unread screenshot
+    return { ...shot, none: false, free: busyToFree(C.blocks(st.meeting), busy), dropped: [], fromShot: (shot.none ? 'no events in those days' : lines.trim()).split('\n').join('\n    ') };
   }
 
   /** Someone wrote to this poll's address and matched nobody. The organiser hears about each address once. */
@@ -254,7 +255,7 @@ export class Poll extends DurableObject<Env> {
     const recipients = [...new Set(to.map(p => env.REDIRECT_ALL_TO ?? p.address))];
     await env.EMAIL.send({
       from: { name: C.render(D.scheduler_name, vars), email: addr }, replyTo: addr, to: recipients, subject: `Re: ${st.meeting.name}`,
-      text: plain, html: html(text), headers: { 'In-Reply-To': st.msgId, References: st.msgId, 'Auto-Submitted': 'auto-generated' },
+      text: plain, html: html(text), headers: { 'In-Reply-To': st.msgId, References: st.msgId }, // no Auto-Submitted: it tells Microsoft the mail expects no reply, and the ask went to Junk (2026-09-18); auto-replies coming in are filtered by isAuto
       ...(attachments ? { attachments } : {}),
     });
     log(st.id, 'mail', { tpl, to: to.map(p => p.first) });

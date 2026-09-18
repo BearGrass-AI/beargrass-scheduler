@@ -4,7 +4,7 @@ import { readFileSync } from 'node:fs';
 import * as C from '../src/core';
 import { sanity, allowed, authenticated, kickoffCap } from '../src/check';
 import { html } from '../src/html';
-import { readShots } from '../src/vision';
+import { readShots, busyToFree } from '../src/vision';
 import D from '../src/defaults.json';
 
 const Z = 'America/Denver';
@@ -261,6 +261,13 @@ describe('rendering', () => {
       expect(h).not.toMatch(/white-space/);
       void fences;
     }
+  });
+  it('free time is the working hours with the busy blocks cut out', () => {
+    const day = (h1: number, h2: number): [number, number] => [L(10, 5, h1), L(10, 5, h2)];
+    expect(busyToFree([day(9, 17)], [day(10, 11), day(15, 15.5)])).toEqual([day(9, 10), day(11, 15), day(15.5, 17)]);
+    expect(busyToFree([day(9, 17)], [])).toEqual([day(9, 17)]);
+    expect(busyToFree([day(9, 17)], [day(8, 18)])).toEqual([]);
+    expect(busyToFree([day(9, 17)], [day(8, 10), day(9.5, 12)])).toEqual([day(12, 17)]);
   });
   it('unwraps prose paragraphs and leaves indented, quoted, fenced, table and list lines alone', () => {
     const wrapped = 'The invite is attached. If your mail shows a file instead of\nan invite, use one of these:\n\n    Google: x\n    Outlook: y\n\n1. Give this to your agent. If it only\n   drafts, you hit send.\n2. Then wait.\n\n```json\n{\n  "a": 1\n}\n```\n\n> quoted\n> lines\n\nEnd.';

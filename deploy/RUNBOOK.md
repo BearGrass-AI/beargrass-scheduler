@@ -78,6 +78,15 @@ npx wrangler tail --env production --format json
 Every decision is one JSON line: `kickoff.created`, `submit` with what was read, `invite.sent`,
 `kickoff.rejected` with the header that failed. Read it once with real mail clients before inviting anyone else.
 
+## 5b. Deliverability at Microsoft
+
+A new sending domain starts with no reputation, and Outlook.com put the very first ask in Junk (measured
+2026-09-18); the receipt after the person replied reached the Inbox. Three things help, in order: no
+`Auto-Submitted` header on mail that asks for a reply (done in code); the organizations you invite allow-listing
+the sending domain (`docs/for-your-mail-admin.md` is written for their admin); and registering the sending
+domain's IP range with Microsoft's Smart Network Data Services and Junk Mail Reporting Program, a one-time form
+on the operator's side. Tell the first organizers to check Junk once; after one reply the thread is trusted.
+
 ## 6. Rollback
 
 `npx wrangler versions list --env production` then `npx wrangler rollback --env production`. Polls in flight

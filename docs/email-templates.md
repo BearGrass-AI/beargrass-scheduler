@@ -116,11 +116,11 @@ Send more times any time and I'll add them. When the last one lands, the invite 
 
 ```
 
-From your screenshot I read:
+From your screenshot I read these as busy:
 
     {{lines}}
 
-Wrong anywhere? Reply with the fix, one time per line, and I'll swap it in.
+and counted the rest of {{hours}} as free. Wrong anywhere? Reply with your free times, one per line, and I'll swap them in.
 ```
 
 ---
@@ -359,7 +359,7 @@ yourself, or start a fresh email with a wider window and CC me again.
 ## §24 `vision` — the prompt sent with a screenshot to the model; not an email
 
 ```
-This image is a screenshot of {{first}}'s calendar. The meeting window is {{window_start}} to {{window_end}}, {{year}}, working hours {{hours}} {{zone_name}}. List every stretch inside those hours and dates where the calendar shows no event, one per line, in exactly this form and nothing else:
-Tue Sep 22, 2pm to 5pm
-Use the weekday, month and day the calendar shows. If the image is not a calendar, or the dates are not visible, reply with the single word: unreadable
+This image is a screenshot of {{first}}'s calendar. List every event or busy block you can see on the days between {{window_start}} and {{window_end}}, {{year}}, one per line, in exactly this form and nothing else:
+Tue Sep 22, 2pm to 3pm
+Use the weekday, month and day the calendar shows, and each block's start and end time. If those days show no events, reply with the single word: none. If the image is not a calendar, or the dates are not visible, reply with the single word: unreadable
 ```

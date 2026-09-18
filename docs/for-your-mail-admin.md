@@ -12,7 +12,7 @@ Written 2026-09-17; the DNS facts are re-measurable with the commands shown.
 | One nudge after 48 hours of silence | the same address | the quiet participant | none |
 | The invite | the same address, on the organizer's behalf | everyone on the organizer's To line | `invite.ics`, `text/calendar`, iTIP METHOD:REQUEST |
 
-Every message also carries `Auto-Submitted: auto-generated`, `In-Reply-To` and `References` pointing at the
+Every message also carries `In-Reply-To` and `References` pointing at the
 organizer's own email, and a plain-text part beside the HTML. Links appear only in the invite: an add-to-calendar
 link for Google and one for Outlook, for clients that show the attachment as a file.
 
