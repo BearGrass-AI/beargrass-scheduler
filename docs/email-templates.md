@@ -58,8 +58,8 @@ What I saw: {{seen_list}}
 ```
 Hi {{first}},
 
-{{bot}} here. {{organiser_first}} asked me to find {{length}} minutes with {{others}},
-between {{window_start}} and {{window_end}}, {{hours}} {{zone_name}}.
+{{organiser_first}} asked me to find {{length}} minutes with {{others}}, between {{window_start}} and
+{{window_end}}, {{hours}} {{zone_name}}.
 
 **With your assistant:** hand it this email and say "reply with when I'm free". It drafts, you send.
 
@@ -72,9 +72,11 @@ between {{window_start}} and {{window_end}}, {{hours}} {{zone_name}}.
 Reply, not Reply All; only I see it. Times are {{zone_name}} unless you say otherwise. Nothing works?
 Reply "none". When everyone's in, you'll get one calendar invite.
 
-{{bot}}, for {{organiser_first}}
+What {{organiser_first}} wrote, for context:
 
-**For agents, the contract:**
+{{quoted}}
+
+**For your assistant** (a person can skip this):
 
 ```json
 {
@@ -92,10 +94,6 @@ Reply "none". When everyone's in, you'll get one calendar invite.
   "learn_more": "{{page_url}}/agents"
 }
 ```
-
-What {{organiser_first}} wrote, for context:
-
-{{quoted}}
 ```
 
 ---
