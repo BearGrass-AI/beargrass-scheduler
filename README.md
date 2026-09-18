@@ -34,9 +34,9 @@ Hosted at `scheduler.beargrass.ai` for invited organisations. MIT licensed: run 
 You need a Cloudflare account, a domain on it that carries no other mail, and Node.
 
 1. `npm install`, then `npx wrangler login`.
-2. In `wrangler.jsonc`: set `DOMAIN` (your mail domain), `MAILBOX` (the local part; `meet`), `PRODID`, `PAGE_URL` (where the page is served; the ask points agents at `<PAGE_URL>/agents`), and at the
+2. In `wrangler.jsonc`: set `DOMAIN` (your mail domain), `MAILBOX` (the local part; `meet`), `PRODID`, `PAGE_URL` (where your pages are served; the ask points agents at `<PAGE_URL>/agents`), and at the
    top level `REDIRECT_ALL_TO` (the one inbox a development deploy may mail; the send binding's
-   `allowed_destination_addresses` must name the same address). Under `env.production`, set the route for the page.
+   `allowed_destination_addresses` must name the same address). Under `env.production`, add a custom-domain route if you want this Worker to serve `public/` as your page; otherwise serve the pages elsewhere and point `PAGE_URL` there.
 3. In `src/defaults.json`: `organiser_domains` (who may start a meeting), `scheduler_name`, the default zone and
    hours, the limits. `src/mail/mail.txt` is every message the Scheduler sends; edit the words freely, keep the
    `### name` headers and the `{{placeholders}}` you want.
