@@ -13,9 +13,10 @@ original email, never sells what you send. Kept for a month, then forgotten.
 
 Reviewing this with an assistant? Start it at `AGENTS.md`; every claim there comes with the command that checks it.
 
-This repository is the whole thing: one Cloudflare Worker, MIT licensed. The hosted address is free for
-Montana's state, universities, community colleges and economic development organizations, by invitation:
-[beargrass.ai](https://beargrass.ai). Anyone can run their own on their own domain in six steps, below.
+This repository is the whole thing: one Cloudflare Worker, MIT licensed. Run your own on your own domain in
+six steps, below, and nothing ever leaves your account. Or have BeargrassAI host it: $5 a month for your
+organization on `meet@beargrass.ai`, or set up on your own domain and looked after; both at
+[beargrass.ai](https://beargrass.ai).
 
 ## What it does, exactly
 
