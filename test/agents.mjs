@@ -38,7 +38,7 @@ const html = `<!doctype html>
 </head>
 <body>
 <main>
-  <header><a href="/" style="color:var(--gold);text-decoration:none;font-weight:600">the Scheduler</a><nav><a href="/agents.yaml">raw yaml</a><a href="/">the page for people</a><a href="https://github.com/BearGrass-AI/beargrass-scheduler">code</a></nav></header>
+  <header><a href="/" style="color:var(--gold);text-decoration:none;font-weight:600">the Scheduler</a><nav><a href="/agents.yaml">raw yaml</a><a href="/">the page for people</a><a href="https://github.com/BearGrass-AI/meet.beargrass.ai">code</a></nav></header>
   <pre>${body}</pre>
   <footer>This page is <code>/agents.yaml</code> on this host, coloured. Fetch the raw file if you are a program; read this one if you are a person.</footer>
 </main>

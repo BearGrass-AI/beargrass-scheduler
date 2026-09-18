@@ -1,6 +1,6 @@
 # The Beargrass Scheduler, for agents.
 # Everything an assistant needs to act on one of its emails, in one page. A human can read it too.
-# Source: https://github.com/BearGrass-AI/beargrass-scheduler (MIT). This file: /agents.yaml on the host that sent the email.
+# Source: https://github.com/BearGrass-AI/meet.beargrass.ai (MIT). This file: /agents.yaml on the host that sent the email.
 
 what_it_is:
   one_line: An email address that schedules a meeting between people whose calendars cannot see each other.
@@ -74,6 +74,6 @@ for_your_principal:
   if_nothing_works: reply none; the organiser hears at once and can widen the window
 
 code_and_contact:
-  source: https://github.com/BearGrass-AI/beargrass-scheduler
-  mail_admin_note: https://github.com/BearGrass-AI/beargrass-scheduler/blob/main/docs/for-your-mail-admin.md
-  user_guide: https://github.com/BearGrass-AI/beargrass-scheduler/blob/main/docs/user-guide.md
+  source: https://github.com/BearGrass-AI/meet.beargrass.ai
+  mail_admin_note: https://github.com/BearGrass-AI/meet.beargrass.ai/blob/main/docs/for-your-mail-admin.md
+  user_guide: https://github.com/BearGrass-AI/meet.beargrass.ai/blob/main/docs/user-guide.md

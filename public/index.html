@@ -91,7 +91,7 @@ Mon Sep 28, all day</pre></li>
   </ul>
 
   <h2>What it keeps</h2>
-  <p class="small">For one meeting: the names and addresses on the organiser's To line, the organiser's own words, each person's free times as they sent them, and the chosen slot. One record per meeting, on Cloudflare, deleted thirty days after the meeting window ends. Nothing is read from any calendar; no third party receives any of it. The organiser sees who is free when; each participant sees only their own receipt. A calendar screenshot, if you send one, is read once by a model on Cloudflare Workers AI and not stored. Your mail administrator's questions are answered in <a href="https://github.com/BearGrass-AI/beargrass-scheduler/blob/main/docs/for-your-mail-admin.md">one page</a>; the code is public under the MIT license.</p>
+  <p class="small">For one meeting: the names and addresses on the organiser's To line, the organiser's own words, each person's free times as they sent them, and the chosen slot. One record per meeting, on Cloudflare, deleted thirty days after the meeting window ends. Nothing is read from any calendar; no third party receives any of it. The organiser sees who is free when; each participant sees only their own receipt. A calendar screenshot, if you send one, is read once by a model on Cloudflare Workers AI and not stored. Your mail administrator's questions are answered in <a href="https://github.com/BearGrass-AI/meet.beargrass.ai/blob/main/docs/for-your-mail-admin.md">one page</a>; the code is public under the MIT license.</p>
 
   <script>
     function day(v) { if (!v) return '…'; var d = new Date(v + 'T12:00:00'); return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }
@@ -106,7 +106,7 @@ Mon Sep 28, all day</pre></li>
     document.getElementById('pick').addEventListener('input', show); show();
   </script>
 
-  <footer>Built on <a href="https://github.com/BearGrass-AI/beargrass-scheduler">the Beargrass Scheduler</a>, open source under MIT. The agents pick the time; the humans still say yes.</footer>
+  <footer>Built on <a href="https://github.com/BearGrass-AI/meet.beargrass.ai">the Beargrass Scheduler</a>, open source under MIT. The agents pick the time; the humans still say yes.</footer>
 </main>
 </body>
 </html>
