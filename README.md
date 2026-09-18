@@ -11,6 +11,8 @@ time that works for all of them.
 No account. No software. No calendar access. Never reads a calendar, never emails anyone who wasn't on the
 original email, never sells what you send. Kept for a month, then forgotten.
 
+Reviewing this with an assistant? Start it at `AGENTS.md`; every claim there comes with the command that checks it.
+
 This repository is the whole thing: one Cloudflare Worker, MIT licensed. The hosted address is free for
 Montana's state, universities, community colleges and economic development organisations, by invitation:
 [beargrass.ai](https://beargrass.ai). Anyone can run their own on their own domain in six steps, below.
