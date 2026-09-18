@@ -3,6 +3,7 @@ import { describe, it, expect } from 'vitest';
 import { readFileSync } from 'node:fs';
 import * as C from '../src/core';
 import { sanity, allowed, authenticated, kickoffCap } from '../src/check';
+import { html } from '../src/html';
 import { readShots } from '../src/vision';
 import D from '../src/defaults.json';
 
@@ -233,6 +234,14 @@ describe('the kickoff gates', () => {
 
 describe('rendering', () => {
   it('strips whitespace and quotes from an address bound for a calendar line', () => expect(C.addr('mark@x.org\r\nX-INJECTED:evil "q"')).toBe('mark@x.orgX-INJECTED:evilq'));
+  it('the HTML part carries real breaks: paragraphs, <br>, indented lines, a fenced block, a grey quote (Outlook ignores pre-wrap)', () => {
+    const h = html('Hi Erin,\n\nlike\n\n    Mon Oct 5, 2pm to 5pm\n    Tue Oct 6, 9am to noon\n\n```json\n{\n  "a": 1\n}\n```\n\n> quoted\n> lines');
+    expect(h).toContain('<p style="margin:0 0 1em">Hi Erin,</p>');
+    expect(h).toContain('&nbsp;&nbsp;&nbsp;&nbsp;Mon Oct 5, 2pm to 5pm<br>&nbsp;&nbsp;&nbsp;&nbsp;Tue Oct 6, 9am to noon');
+    expect(h).toMatch(/monospace[^>]*>\{<br>&nbsp;&nbsp;&quot;a&quot;|monospace[^>]*>\{<br>&nbsp;&nbsp;"a": 1<br>\}/);
+    expect(h).toContain('<span style="color:#666">&gt; quoted</span><br><span style="color:#666">&gt; lines</span>');
+    expect(h).not.toContain('pre-wrap');
+  });
   it('unwraps prose paragraphs and leaves indented, quoted, fenced, table and list lines alone', () => {
     const wrapped = 'The invite is attached. If your mail shows a file instead of\nan invite, use one of these:\n\n    Google: x\n    Outlook: y\n\n1. Give this to your agent. If it only\n   drafts, you hit send.\n2. Then wait.\n\n```json\n{\n  "a": 1\n}\n```\n\n> quoted\n> lines\n\nEnd.';
     expect(C.unwrap(wrapped)).toBe('The invite is attached. If your mail shows a file instead of an invite, use one of these:\n\n    Google: x\n    Outlook: y\n\n1. Give this to your agent. If it only drafts, you hit send.\n2. Then wait.\n\n```json\n{\n  "a": 1\n}\n```\n\n> quoted\n> lines\n\nEnd.');
@@ -268,11 +277,11 @@ describe('rendering', () => {
     expect(new URL(google_link).searchParams.get('dates')).toBe('20260922T200000Z/20260922T203000Z');
     expect(new URL(outlook_link).searchParams.get('startdt')).toBe('2026-09-22T20:00:00.000Z');
     expect(new URL(google_link).searchParams.get('text')).toBe('Introductions');
-    expect(C.html(`see ${google_link} now`)).toContain(`<a href="${google_link.replace(/&/g, '&amp;')}">`);
+    expect(html(`see ${google_link} now`)).toContain(`<a href="${google_link.replace(/&/g, '&amp;')}">`);
   });
   it('templates and html escaping', () => {
     expect(C.render('Hi {{first}}, {{n}} in', { first: 'Zed', n: 2 })).toBe('Hi Zed, 2 in');
-    expect(C.html('a < b')).toContain('a &lt; b');
+    expect(html('a < b')).toContain('a &lt; b');
   });
   it('the copy doc carries every template section verbatim', () => {
     const pack = readFileSync('src/mail/mail.txt', 'utf8'), doc = readFileSync('docs/email-templates.md', 'utf8'), parts = pack.split(/^### (\S+)\r?\n/m).slice(1);
@@ -304,7 +313,7 @@ describe('the page for agents', () => {
 describe('what the code must and must not contain', () => {
   const read = (f: string) => readFileSync(f, 'utf8');
   const lines = (f: string) => read(f).split('\n').length - 1;
-  it.each<[string, number]>([['src/index.ts', 110], ['src/poll.ts', 270], ['src/core.ts', 360], ['src/check.ts', 40], ['src/vision.ts', 40], ['src/ledger.ts', 40]])('%s is within its size limit of %i lines', (f, cap) => expect(lines(f)).toBeLessThanOrEqual(cap));
+  it.each<[string, number]>([['src/index.ts', 110], ['src/poll.ts', 270], ['src/core.ts', 360], ['src/check.ts', 40], ['src/vision.ts', 40], ['src/ledger.ts', 40], ['src/html.ts', 40]])('%s is within its size limit of %i lines', (f, cap) => expect(lines(f)).toBeLessThanOrEqual(cap));
   const src = ['src/index.ts', 'src/poll.ts', 'src/core.ts', 'src/check.ts'].map(read).join('\n');
   it.each<[string, RegExp]>([
     ['no bare fetch( call, only bindings', /(?<![\w.])fetch\(/], ['no address-like literal', /\w@\w/],

@@ -302,13 +302,6 @@ export function unwrap(text: string): string {
   return out.join('\n');
 }
 
-/** The HTML part: the same text, escaped, with URLs made clickable. */
-export function html(text: string): string {
-  const escaped = text.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' } as Record<string, string>)[c]);
-  const linked = escaped.replace(/https?:\/\/[^\s<]+/g, url => `<a href="${url}">${url}</a>`);
-  return `<div style="font-family:Georgia,serif;font-size:16px;line-height:1.5;white-space:pre-wrap">${linked}</div>`;
-}
-
 /** "Doe, Jane" → Jane; "Dr. Sam Lee" → Sam; no name → the local part: after a "+" if there is one, else before the first dot. */
 export function firstName(name: string | undefined, address: string): string {
   const n = (name ?? '').trim().replace(/^(dr|mr|mrs|ms|prof|rev)\.?\s+/i, '');

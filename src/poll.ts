@@ -3,6 +3,7 @@
 import { DurableObject } from 'cloudflare:workers';
 import * as C from './core';
 import { sanity } from './check';
+import { html } from './html';
 import { readShots, type Shot, type Vision } from './vision';
 import type { Ledger } from './ledger';
 import D from './defaults.json';
@@ -252,7 +253,7 @@ export class Poll extends DurableObject<Env> {
     const recipients = [...new Set(to.map(p => env.REDIRECT_ALL_TO ?? p.address))];
     await env.EMAIL.send({
       from: { name: C.render(D.scheduler_name, vars), email: addr }, replyTo: addr, to: recipients, subject: `Re: ${st.meeting.name}`,
-      text, html: C.html(text), headers: { 'In-Reply-To': st.msgId, References: st.msgId, 'Auto-Submitted': 'auto-generated' },
+      text, html: html(text), headers: { 'In-Reply-To': st.msgId, References: st.msgId, 'Auto-Submitted': 'auto-generated' },
       ...(attachments ? { attachments } : {}),
     });
     log(st.id, 'mail', { tpl, to: to.map(p => p.first) });

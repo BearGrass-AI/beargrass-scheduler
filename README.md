@@ -68,6 +68,7 @@ src/poll.ts          the Poll durable object, one per meeting: kickoff, replies,
 src/ledger.ts        the Ledger durable object, one per organizer: how many meetings they started
 src/core.ts          pure logic: the reply grammar, zone math, the earliest slot, the .ics, links, rendering
 src/check.ts         the gates: invited domain, authentication, the organizer's cap, the slot checks before an invite
+src/html.ts          the HTML part of every message: real paragraphs and breaks, since Outlook ignores pre-wrap
 src/vision.ts        the screenshot reader on Workers AI through the AI binding; off without the binding
 src/mail/mail.txt    every outbound message and the screenshot prompt, one `### name` section each
 src/mail/invite.ics  the iTIP REQUEST template
@@ -84,7 +85,7 @@ wrangler.jsonc       the two environments: the redirected one at the top level; 
 ```
 
 Each source file has a size limit enforced by a test (handler 110 lines, poll 270, core 360, check 40,
-vision 40, ledger 40). When a file reaches its limit it is refactored, not raised.
+vision 40, ledger 40, html 40). When a file reaches its limit it is refactored, not raised.
 
 ## Commands
 
