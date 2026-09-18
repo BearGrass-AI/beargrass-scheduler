@@ -1,0 +1,17 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:{{prodid}}
+METHOD:REQUEST
+BEGIN:VEVENT
+UID:{{uid}}
+DTSTAMP:{{dtstamp}}
+DTSTART:{{dtstart}}
+DTEND:{{dtend}}
+SEQUENCE:{{sequence}}
+SUMMARY:{{summary}}
+LOCATION:{{location}}
+STATUS:CONFIRMED
+ORGANIZER;CN={{organiser_cn}};SENT-BY={{sent_by}}:mailto:{{organiser_address}}
+{{attendees}}
+END:VEVENT
+END:VCALENDAR

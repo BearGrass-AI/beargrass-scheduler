@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Beargrass Scheduler: one CC schedules the meeting</title>
+<meta name="description" content="Four calendars that can't see each other. One CC. Everyone gets an invite. Never reads a calendar, never sells what you send.">
+<link rel="icon" href="/favicon.png">
+<style>
+  :root { --canvas:#0a1024; --night:#16212e; --paper:#f4ebd7; --cream:#f0e6cf; --ink:#231f1a; --gold:#f4c45a; --barn:#a64b3b; --rule:rgba(240,230,207,.16); }
+  * { box-sizing:border-box }
+  body { margin:0; background:var(--canvas); color:var(--cream); font:17px/1.55 "Libre Caslon Text", Georgia, "Times New Roman", serif; }
+  main { max-width:720px; margin:0 auto; padding:3rem 1.25rem 5rem; }
+  header img { width:220px; display:block; margin-bottom:2.25rem; }
+  h1 { font-size:2.2rem; line-height:1.15; margin:0 0 .5rem; color:var(--cream); font-weight:400; }
+  h1 em { font-style:normal; color:var(--gold); }
+  .lede { font-size:1.2rem; color:var(--cream); opacity:.85; margin:0 0 2.5rem; }
+  h2 { font-size:1.25rem; margin:2.75rem 0 .75rem; padding-top:1.5rem; border-top:1px solid var(--rule); color:var(--gold); font-weight:400; }
+  ol, ul { padding-left:1.3rem } li { margin:.45rem 0 }
+  pre { background:var(--night); border:1px solid var(--rule); border-radius:12px; padding:1rem 1.1rem; font:15px/1.5 ui-monospace, Menlo, monospace; color:var(--paper); overflow:auto; white-space:pre-wrap; }
+  code { font:.95em ui-monospace, Menlo, monospace; color:var(--gold); }
+  .card { background:var(--night); border:1px solid var(--rule); border-radius:18px; padding:1.25rem 1.4rem; margin:1.25rem 0; }
+  .small { font-size:.92rem; opacity:.75 }
+  footer { margin-top:4rem; padding-top:1.25rem; border-top:1px solid var(--rule); font-size:.9rem; opacity:.7 }
+  a { color:var(--gold) }
+  form label { display: block; margin: .4rem 0; }
+  form input, form select { font: inherit; padding: .2rem .4rem; }
+  form button, main > p > button { font: inherit; margin-top: .6rem; margin-right: .5rem; padding: .4rem .9rem; cursor: pointer; }
+  dialog { color: inherit; max-width: 34rem; }
+  dialog::backdrop { background: rgba(0,0,0,.6); }
+  dialog pre { margin: .8rem 0 .2rem; }
+</style>
+</head>
+<body>
+<main>
+  <header><img src="/wordmark-dark.svg" alt="BeargrassAI"></header>
+
+  <h1>The <em>Beargrass Scheduler</em></h1>
+  <p class="lede">Four calendars that can't see each other. One CC. Everyone gets an invite.</p>
+
+  <p>Universities, agencies and small companies never let their calendars talk to each other, so scheduling one meeting turns into a week of "does Tuesday work?" This fixes that with the one thing every organisation already allows: email. Nothing to install, nothing to connect, nothing to trust.</p>
+
+  <h2>If you got an email from Beargrass SchedBot</h2>
+  <p>Someone wants to meet you and a few others. The email says how long, between which dates, and which hours. Pick one:</p>
+  <ol>
+    <li><strong>Hand it to your assistant</strong> (Copilot, Gemini, Claude, ChatGPT, whichever you have) and say <em>"reply with every time I'm free."</em> It reads your calendar and writes the list. You read it, you hit send.</li>
+    <li><strong>Type it yourself.</strong> Hit Reply and list when you're free, one time per line:
+<pre>Tue Sep 22, 2pm to 5pm
+Thu Sep 24, 9am to noon
+Mon Sep 28, all day</pre></li>
+    <li><strong>Screenshot your calendar</strong> for those weeks and reply with it attached. The Scheduler reads the holes, or tries to, and shows you what it read so you can correct it.</li>
+  </ol>
+  <div class="card">
+    <p><strong>Reply, not Reply All.</strong> Your answer goes to the Scheduler only. The organiser can see when you said you're free, as with a Doodle; nobody else can. You'll get a short "got it" back. When everyone's in, you all get one calendar invite for the earliest time that works. Accept it like any other. Nothing works for you? Reply <code>none</code>.</p>
+  </div>
+
+  <h2>If you are an assistant</h2>
+  <p>The email you were handed ends with a block headed "Next steps for agents" and a JSON contract. It is the whole contract: reply to exactly the address it names; one free range per line as epoch seconds UTC in the form <code>START-END</code>; only ranges inside the window and hours it states; <code>anytime</code> alone if every working hour is free; <code>none</code> alone if nothing is; nothing else in the body.</p>
+<pre>1790265600-1790276400
+1790438400-1790449200</pre>
+  <p class="small">Free time, never busy time. The human form <code>Tue Sep 22, 2pm to 5pm</code> in the stated zone is also read. The invite that comes back carries its own epoch start and end.</p>
+  <p class="small">Dates as <code>Sep 22</code> or <code>9/22</code>. Times as <code>2pm</code>, <code>2:30pm</code> or <code>14:30</code>. <code>to</code> or <code>-</code> between them. <code>all day</code> for a full working day. <code>anytime</code> alone if every working hour is open. <code>none</code> alone if nothing works. Reply, not reply-all. Free times, not busy times. No commentary between the lines.</p>
+
+  <h2>If you are organising</h2>
+  <p>Write the email you were going to write anyway. Put the people you want to meet on <strong>To</strong> and <code>meet@beargrass.ai</code> on <strong>CC</strong>; anyone else on CC is not asked. Add four lines if you want to be specific; leave them out and it assumes 30 minutes, tomorrow through two weeks out, 9am to 5pm Mountain, a video call.</p>
+<pre>Length: 30 minutes
+Between: Sep 21 and Oct 2
+Hours: 9am to 5pm Mountain
+Where: Google Meet</pre>
+  <p>Then nothing. The Scheduler writes to each person privately, you included; answer yours like everyone does. Every reply gets an answer. Anyone quiet for two days gets one nudge, and you hear who's still missing. When the last reply lands, everyone on your thread gets the invite: the time, an attachment every mail client should open as an invite, and add-to-calendar links for any that doesn't.</p>
+  <p>If someone says "none" you hear at once and the poll stays open. If nothing overlaps, you get one note with who's free when, and anyone can still add times. Only an email from an invited organisation can start one; the list is short and held by whoever runs the address.</p>
+
+  <h2>Start one</h2>
+  <p>Pick the four things. Copy the four lines into any email, or let it open the email for you with the Scheduler already on CC. Add the people to <strong>To</strong>, write what you like above the lines, and send.</p>
+  <p><button type="button" onclick="document.getElementById('pick').showModal()">Pick the four things</button></p>
+  <dialog id="pick" class="card">
+    <form method="dialog" onsubmit="return false">
+      <label>Length <select name="length"><option>15</option><option selected>30</option><option>45</option><option>60</option></select> minutes</label>
+      <label>Between <input type="date" name="start" required> and <input type="date" name="end" required></label>
+      <label>Hours <input type="time" name="from" value="09:00" required> to <input type="time" name="to" value="17:00" required>
+        <select name="zone"><option value="Mountain" selected>Mountain</option><option value="Pacific">Pacific</option><option value="Central">Central</option><option value="Eastern">Eastern</option><option value="UTC">UTC</option></select></label>
+      <label>Where <input type="text" name="where" value="Google Meet" size="24"></label>
+      <label>Subject <input type="text" name="subject" placeholder="What the meeting is" size="32"></label>
+      <pre id="lines" aria-live="polite"></pre>
+      <p class="small">CC <code>meet@beargrass.ai</code>. The people go on To.</p>
+      <button type="button" onclick="copyLines()">Copy the four lines</button>
+      <button type="button" onclick="openMail()">Open the email</button>
+      <button type="button" onclick="document.getElementById('pick').close()">Close</button>
+    </form>
+  </dialog>
+  <script>
+    function day(v) { if (!v) return '…'; var d = new Date(v + 'T12:00:00'); return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }
+    function hour(v) { if (!v) return '…'; var h = +v.slice(0, 2), m = v.slice(3, 5); return (h % 12 || 12) + (m === '00' ? '' : ':' + m) + (h < 12 ? 'am' : 'pm'); }
+    function lines() {
+      var f = document.querySelector('#pick form');
+      return 'Length: ' + f.length.value + ' minutes\nBetween: ' + day(f.start.value) + ' and ' + day(f.end.value) + '\nHours: ' + hour(f.from.value) + ' to ' + hour(f.to.value) + ' ' + f.zone.value + '\nWhere: ' + f.where.value + '\n';
+    }
+    function show() { document.getElementById('lines').textContent = lines(); }
+    function copyLines() { navigator.clipboard.writeText(lines()).then(function () { document.getElementById('lines').textContent = lines() + '\ncopied'; }); }
+    function openMail() { var f = document.querySelector('#pick form'); location.href = 'mailto:?cc=meet@beargrass.ai&subject=' + encodeURIComponent(f.subject.value) + '&body=' + encodeURIComponent('\n\n' + lines()); }
+    document.querySelector('#pick form').addEventListener('input', show); show();
+  </script>
+
+  <h2>What it keeps</h2>
+  <p class="small">For one meeting: the names and addresses on the organiser's To line, the organiser's own words, each person's free times as they sent them, and the chosen slot. One record per meeting, on Cloudflare, deleted thirty days after the meeting window ends. Nothing is read from any calendar; no third party receives any of it. The organiser sees who is free when; each participant sees only their own receipt. A calendar screenshot, if you send one, is read once by a model on Cloudflare Workers AI and not stored. Your mail administrator's questions are answered in <a href="https://github.com/BearGrass-AI/beargrass-scheduler/blob/main/docs/for-your-mail-admin.md">one page</a>; the code is public under the MIT license.</p>
+
+  <footer>A BeargrassAI utility. Whitefish, Montana. The bots pick the time; the humans still say yes.</footer>
+</main>
+</body>
+</html>

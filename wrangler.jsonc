@@ -1,0 +1,46 @@
+{
+  // beargrass-scheduler — layer 0. The top level IS the redirected environment: every recipient is
+  // rewritten to REDIRECT_ALL_TO in code AND the send binding itself is restricted to that address, so a
+  // development deploy can only ever mail the operator. Production is `--env production` only and is the one
+  // environment without that variable. Running your own: change DOMAIN, MAILBOX, PRODID, REDIRECT_ALL_TO, the
+  // production route, and the invited domains in src/defaults.json.
+  // The mail domain is a separate domain from the operator's ordinary mail, so its reputation is its own.
+  // The page lives at scheduler.beargrass.ai in production only; public/ is served as static assets without invoking the Worker.
+  // No secrets. The screenshot reader is Workers AI through the AI binding; remove the binding to switch the feature off.
+  "name": "beargrass-scheduler",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": false,
+  "rules": [{ "type": "Text", "globs": ["**/*.txt", "**/*.ics"], "fallthrough": true }],
+  "assets": { "directory": "./public", "binding": "ASSETS" },
+  "vars": {
+    "DOMAIN": "beargrass.ai",
+    "MAILBOX": "meet",
+    "PRODID": "-//BeargrassAI//Beargrass Scheduler//EN",
+    "AUTHSERV": "mx.cloudflare.net",
+    "REDIRECT_ALL_TO": "mark@beargrassai.com"
+  },
+  "ai": { "binding": "AI" },
+  "send_email": [{ "name": "EMAIL", "allowed_destination_addresses": ["mark@beargrassai.com"] }],
+  "durable_objects": { "bindings": [{ "name": "POLL", "class_name": "Poll" }, { "name": "LEDGER", "class_name": "Ledger" }] },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Poll"] }, { "tag": "v2", "new_sqlite_classes": ["Ledger"] }],
+  "observability": { "enabled": true },
+  "env": {
+    "production": {
+      "name": "beargrass-scheduler-production",
+      "workers_dev": false,
+      "routes": [{ "pattern": "scheduler.beargrass.ai", "custom_domain": true }], // the apex is a separate, private site Worker
+      "assets": { "directory": "./public", "binding": "ASSETS" },
+      "vars": {
+        "DOMAIN": "beargrass.ai",
+        "MAILBOX": "meet",
+        "PRODID": "-//BeargrassAI//Beargrass Scheduler//EN",
+        "AUTHSERV": "mx.cloudflare.net"
+      },
+      "ai": { "binding": "AI" },
+      "send_email": [{ "name": "EMAIL" }],
+      "durable_objects": { "bindings": [{ "name": "POLL", "class_name": "Poll" }, { "name": "LEDGER", "class_name": "Ledger" }] }
+    }
+  }
+}

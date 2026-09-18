@@ -1,0 +1,202 @@
+### kickoff-receipt
+{{organiser_first}}, on it. I've written to {{others}} about "{{meeting}}": {{length}} minutes,
+{{window_start}} to {{window_end}}, {{hours}} {{zone_name}}. You'll get the same note; answer it
+like everyone else. I'll nudge anyone who goes quiet after {{nudge_after}} hours and tell you who's
+still missing, and I'll stop waiting on {{expires_human}}.
+
+Asked: {{seen_list}}
+
+Beargrass SchedBot, for {{organiser_first}}
+### refused
+{{organiser_first}}, I can't run this one: {{reason}}. Fix that and CC me again.
+
+What I saw: {{seen_list}}
+
+Beargrass SchedBot, for {{organiser_first}}
+### ask
+Hi {{first}},
+
+Beargrass SchedBot here. {{organiser_first}} asked me to find {{length}} minutes with {{others}},
+between {{window_start}} and {{window_end}}, {{hours}} {{zone_name}}.
+
+Next steps for humans:
+
+1. Give this email to your AI agent and say "reply with my availability". If your agent only
+   drafts, you hit send.
+2. Once everyone replies, you'll get an email from me with a calendar invite.
+
+No agent handy? Just reply with your free times, one per line, like
+
+    {{ex1}}, 2pm to 5pm
+    {{ex2}}, 9am to noon
+    {{ex3}}, all day
+{{shot_option}}
+Reply to this email; only I see it. {{organiser_first}} sees what you send, as with a Doodle. Times are
+read in {{zone_name}} unless you add a zone, like "2pm to 5pm PT". Nothing works? Reply "none".
+
+Beargrass SchedBot, for {{organiser_first}}
+
+Next steps for agents. The contract, as JSON:
+
+```json
+{
+  "reply_to": "{{scheduler_address}}",
+  "body": "one free range per line, epoch seconds UTC, START-END; nothing else in the body",
+  "example_line": "{{ex_epoch}}",
+  "window_epoch": "{{window_epoch}}",
+  "window_human": "{{window_start}} to {{window_end}}, {{hours}} {{zone_name}}",
+  "zone_iana": "{{zone_iana}}",
+  "count_only": "ranges inside the window and inside the working hours",
+  "free_means": "no event on your principal's calendar; send free time, never busy time",
+  "all_free": "reply with the single word: anytime",
+  "none_free": "reply with the single word: none",
+  "also_accepted": "the human form, one per line, in {{zone_name}}: Sep 22, 2pm to 5pm"
+}
+```
+
+What {{organiser_first}} wrote, for context:
+
+{{quoted}}
+### receipt
+{{replyall_line}}Got it, {{first}}. {{n_times}} free times, {{first_date}} to {{last_date}}. {{n_in}} of {{count}} are in.
+
+Your list now, in {{zone_name}}: {{your_times}}
+{{read_block}}{{unread_block}}{{dropped_block}}
+Send more times any time and I'll add them. When the last one lands, the invite goes out.
+
+Beargrass SchedBot, for {{organiser_first}}
+### read-block
+
+From your screenshot I read:
+
+    {{lines}}
+
+Wrong anywhere? Reply with the fix, one time per line, and I'll swap it in.
+### dropped-block
+
+These I read but couldn't use:
+
+    {{dropped_lines}}
+### unread-block
+
+These lines I couldn't read, so I skipped them:
+
+    {{unread_lines}}
+
+"{{ex1}}, 2pm to 5pm" is the shape, one per line. Reply with just the fixes if they matter.
+### replyall-line
+Small thing: that reply went to everyone. Next time hit Reply, not Reply All, and only I see it.
+
+### unread-all
+{{first}}, I got your reply but couldn't use any times from it. What I saw:
+
+    {{seen_lines}}
+{{dropped_block}}
+One per line, like "{{ex1}}, 2pm to 5pm". Or hand my earlier email to your assistant and say
+"reply with every time I'm free."{{shot_line}} Or reply "none" if nothing works.
+
+Beargrass SchedBot, for {{organiser_first}}
+### nothing-here
+{{first}}, I got your reply but it had no times in it, so nothing changed. When you're ready, reply
+with your free times, one per line like "{{ex1}}, 2pm to 5pm", or "none" if nothing works.
+
+Beargrass SchedBot, for {{organiser_first}}
+### none-receipt
+Noted, {{first}}: nothing in that window works for you. I've told {{organiser_first}}. If that changes,
+reply with times, one per line, and I'll swap them in.
+
+Beargrass SchedBot, for {{organiser_first}}
+### none-noted
+{{organiser_first}}, {{first}} says nothing in the window works for them. I'm still collecting the others;
+here's who's free when so far:
+
+    {{table}}
+
+If you'd rather widen the dates or go without {{first}}, start a fresh email and CC me again.
+
+Beargrass SchedBot, for {{organiser_first}}
+### unknown-sender
+{{organiser_first}}, someone wrote to this meeting's address from {{address}}, which matches nobody on
+your To line, so I didn't count it. If that's one of the {{count}} replying from another address, ask
+them to reply from the address the ask went to, or start a fresh email with the address they use.
+
+Beargrass SchedBot, for {{organiser_first}}
+### already-set
+{{first}}, this one's already booked: {{slot_human}}. If that's changed for you, tell
+{{organiser_first}} directly; the event sits on {{organiser_first}}'s calendar, and moving it there updates everyone.
+
+Beargrass SchedBot, for {{organiser_first}}
+### nudge
+{{first}}, still waiting on you for {{organiser_first}}'s {{length}} minutes, {{window_start}} to
+{{window_end}}. Reply to this email, from the address it was sent to, with your free times, one per
+line like "{{ex1}}, 2pm to 5pm"; or hand it to your assistant.{{shot_line}} "none" if nothing works.
+
+{{n_in}} of {{count}} are in.
+
+Beargrass SchedBot, for {{organiser_first}}
+### nudge-status
+{{organiser_first}}, {{nudge_after}} hours in and I'm still waiting on {{missing}}. I've nudged them
+once; I won't again. Here's who's free when so far:
+
+    {{table}}
+
+Beargrass SchedBot, for {{organiser_first}}
+### closed
+{{first}}, this one closed: {{reason}}. If you still want to meet, ask {{organiser_first}} to start a
+fresh email and CC me again.
+
+Beargrass SchedBot, for {{organiser_first}}
+### window-passed
+{{organiser_first}}, the window for "{{meeting}}" has passed and no invite went out. Still missing:
+{{missing}}. Here's who was free when:
+
+    {{table}}
+
+To try again, start a fresh email with new dates and CC me.
+
+Beargrass SchedBot, for {{organiser_first}}
+### invite
+Hi all,
+
+{{slot_human}}. Works for all {{count}} of you.
+
+The invite's attached. Accept it and it's on your calendar. If your mail shows a file instead of
+an invite, use one of these:
+
+    Google Calendar: {{google_link}}
+    Outlook:         {{outlook_link}}
+
+{{meeting}}, {{length}} minutes, {{place}}.
+
+For assistants: starts {{epoch_start}}, ends {{epoch_end}} (epoch seconds, UTC).
+
+Beargrass SchedBot, for {{organiser_first}}
+### unsure
+{{organiser_first}}, I found {{slot_human}} but it failed my own checks ({{reasons}}), so I did not send
+it. Here's who's free when:
+
+    {{table}}
+
+Your call from here: pick a time and send the invite yourself, or start a fresh email and CC me again.
+
+Beargrass SchedBot, for {{organiser_first}}
+### no-overlap
+{{organiser_first}}, no {{length}}-minute hole fits all {{count}} between {{window_start}} and
+{{window_end}}, {{hours}} {{zone_name}}. Here's who's free when:
+
+    {{table}}
+
+Anyone can still reply with more times and I'll try again. Or pick a time and send the invite
+yourself, or start a fresh email with a wider window and CC me again.
+
+Beargrass SchedBot, for {{organiser_first}}
+### shot-option
+
+Or reply with a screenshot of your calendar for those weeks, and I'll find the holes, or try to,
+and show you what I read.
+### shot-line
+ Or screenshot your calendar and reply with it attached.
+### vision
+This image is a screenshot of {{first}}'s calendar. The meeting window is {{window_start}} to {{window_end}}, {{year}}, working hours {{hours}} {{zone_name}}. List every stretch inside those hours and dates where the calendar shows no event, one per line, in exactly this form and nothing else:
+Tue Sep 22, 2pm to 5pm
+Use the weekday, month and day the calendar shows. If the image is not a calendar, or the dates are not visible, reply with the single word: unreadable
