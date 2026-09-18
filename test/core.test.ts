@@ -291,6 +291,16 @@ describe('the screenshot reader', () => {
   });
 });
 
+describe('the page for agents', () => {
+  it('carries public/agents.yaml verbatim, coloured, and the contract points at it', () => {
+    const yaml = readFileSync('public/agents.yaml', 'utf8'), page = readFileSync('public/agents/index.html', 'utf8');
+    const text = page.slice(page.indexOf('<pre>') + 5, page.indexOf('</pre>')).replace(/<[^>]+>/g, '').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
+    expect(text).toBe(yaml);
+    expect(readFileSync('src/mail/mail.txt', 'utf8')).toContain('"learn_more": "{{page_url}}/agents"');
+    expect(yaml).toMatch(/^how_to_reply:/m); expect(yaml).toMatch(/^do_not:/m); expect(yaml).toMatch(/^privacy:/m);
+  });
+});
+
 describe('what the code must and must not contain', () => {
   const read = (f: string) => readFileSync(f, 'utf8');
   const lines = (f: string) => read(f).split('\n').length - 1;

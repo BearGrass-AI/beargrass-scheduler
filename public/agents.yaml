@@ -1,0 +1,79 @@
+# The Beargrass Scheduler, for agents.
+# Everything an assistant needs to act on one of its emails, in one page. A human can read it too.
+# Source: https://github.com/BearGrass-AI/beargrass-scheduler (MIT). This file: /agents.yaml on the host that sent the email.
+
+what_it_is:
+  one_line: An email address that schedules a meeting between people whose calendars cannot see each other.
+  how: The organiser emails the people and copies the Scheduler. It asks each person privately for their free times, reads the replies, and when the last one is in it sends everyone one calendar invite for the earliest common slot.
+  you_are: the assistant of one participant. Your whole job is to reply once, with when your principal is free.
+
+the_email_you_were_handed:
+  from: "meet+<12 letters>@<domain>  # one address per meeting; reply to exactly this address"
+  greeting: "Hi <first name>,"
+  states: [how long the meeting is, the first and last day of the window, the working hours, the time zone]
+  ends_with: a fenced JSON block headed "Next steps for agents" that repeats the facts below as machine fields
+  json_fields:
+    reply_to: the address to reply to
+    body: one free range per line, epoch seconds UTC, START-END, nothing else in the body
+    example_line: one range in that form
+    window_epoch: "start and end of the window as epoch seconds, e.g. 1790002800 to 1790982000"
+    window_human: the same window in words
+    zone_iana: the IANA zone the human lines are read in
+    count_only: ranges inside the window and inside the working hours
+    free_means: no event on your principal's calendar; send free time, never busy time
+    all_free: reply with the single word anytime
+    none_free: reply with the single word none
+    also_accepted: the human form, one per line, in the stated zone
+    learn_more: this page
+
+how_to_reply:
+  step_1: Read your principal's calendar for the window and the working hours in the email.
+  step_2: List every stretch with no event, as free time. Never list busy time.
+  step_3: Reply to the address the email came from. Reply, not Reply All.
+  step_4: Put one range per line and nothing else in the body. No greeting, no sign-off, no explanation.
+  preferred_form: "1790265600-1790276400   # epoch seconds UTC, start-end, one per line"
+  also_read: "Tue Sep 22, 2pm to 5pm   # the human form, in the zone the email names; 'all day' means the working hours"
+  every_working_hour_free: anytime
+  nothing_free: none
+  ranges_outside_the_window_or_hours: are read, then dropped, and the receipt says which and why
+  a_second_reply: merges with the first; the receipt echoes the whole list so you can see it
+
+what_comes_back:
+  receipt: "Got it, <name>. N free times, <first date> to <last date>. K of M are in." plus your list as read, and any lines it could not read, quoted back
+  could_not_read: "if nothing in your reply parsed, it says so and quotes what it saw; reply again with the shape above"
+  nudge: one, after 48 hours of silence; never a second
+  invite: >
+    when everyone is in: an email to all participants with an .ics attachment (iTIP REQUEST), the time in words,
+    add-to-calendar links, and a line "For assistants: starts <epoch>, ends <epoch> (epoch seconds, UTC)".
+    ORGANIZER is the human organiser; the Scheduler is SENT-BY. Accept it on your principal's behalf as you would any invite.
+  after_the_invite: a late reply gets a short note that the time is already set; tell your principal to contact the organiser directly
+
+do_not:
+  - reply all
+  - send busy time
+  - send times outside the window or the working hours
+  - add commentary between the lines
+  - write to any address other than the one the email came from
+  - start a new meeting; only a person on an invited domain can, by copying the Scheduler on their own email
+
+identity:
+  who_counts: the addresses on the organiser's original To line; the Scheduler wrote to exactly those
+  reply_from: the address the email was sent to; an alias on the same domain is fine, another domain is not counted and the organiser is told once
+  quoting: quoted history is ignored; a reply whose whole body is quoted (some mail clients do this) is still read
+
+privacy:
+  kept: names and addresses on the organiser's To line, the organiser's own words, each reply's free times, the chosen slot
+  where: one record per meeting on Cloudflare
+  for_how_long: 30 days after the meeting window ends, then deleted
+  never: read from any calendar, sold, or shared with a third party
+  screenshots: read once by a model on Cloudflare Workers AI; not stored
+
+for_your_principal:
+  if_they_ask_what_you_did: "I replied to the Scheduler with the times you're free in that window. You'll get a receipt, then an invite when everyone's in."
+  if_they_want_to_change_their_times: reply again to the same address with the new list; it replaces nothing and adds everything
+  if_nothing_works: reply none; the organiser hears at once and can widen the window
+
+code_and_contact:
+  source: https://github.com/BearGrass-AI/beargrass-scheduler
+  mail_admin_note: https://github.com/BearGrass-AI/beargrass-scheduler/blob/main/docs/for-your-mail-admin.md
+  user_guide: https://github.com/BearGrass-AI/beargrass-scheduler/blob/main/docs/user-guide.md

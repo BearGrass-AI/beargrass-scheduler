@@ -19,6 +19,7 @@
     "MAILBOX": "meet",
     "PRODID": "-//BeargrassAI//Beargrass Scheduler//EN",
     "AUTHSERV": "mx.cloudflare.net",
+    "PAGE_URL": "https://scheduler.beargrass.ai",
     "REDIRECT_ALL_TO": "mark@beargrassai.com"
   },
   "ai": { "binding": "AI" },
@@ -36,7 +37,8 @@
         "DOMAIN": "beargrass.ai",
         "MAILBOX": "meet",
         "PRODID": "-//BeargrassAI//Beargrass Scheduler//EN",
-        "AUTHSERV": "mx.cloudflare.net"
+        "AUTHSERV": "mx.cloudflare.net",
+        "PAGE_URL": "https://scheduler.beargrass.ai"
       },
       "ai": { "binding": "AI" },
       "send_email": [{ "name": "EMAIL" }],

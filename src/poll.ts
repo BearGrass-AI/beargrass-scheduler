@@ -12,7 +12,7 @@ import pack from './mail/mail.txt';
 /** The template pack: `### name` headers, bodies verbatim. */
 const T: Record<string, string> = Object.fromEntries(pack.split(/^### (\S+)\r?\n/m).slice(1).reduce<[string, string][]>((acc, x, i, arr) => (i % 2 ? acc : [...acc, [x, arr[i + 1]]]), []));
 
-export type Env = { EMAIL: SendEmail; POLL: DurableObjectNamespace<Poll>; LEDGER: DurableObjectNamespace<Ledger>; ASSETS: Fetcher; AI?: Ai; DOMAIN: string; MAILBOX: string; PRODID: string; AUTHSERV: string; REDIRECT_ALL_TO?: string };
+export type Env = { EMAIL: SendEmail; POLL: DurableObjectNamespace<Poll>; LEDGER: DurableObjectNamespace<Ledger>; ASSETS: Fetcher; AI?: Ai; DOMAIN: string; MAILBOX: string; PRODID: string; AUTHSERV: string; PAGE_URL: string; REDIRECT_ALL_TO?: string };
 export type Person = { address: string; name: string; first: string };
 export type Kick = { id: string; msgId: string; organiser: Person; people: Person[]; ignored: string[]; subject: string; text: string; now: number; refused: string }; // refused: the organiser's cap, from the ledger; '' admits
 export type Sub = { from: string; msgId: string; text: string; others: string[]; viaThread: boolean; shots: Shot[] }; // others: every other To/CC address, for the reply-all note
@@ -234,7 +234,7 @@ export class Poll extends DurableObject<Env> {
     const ex = bl.slice(0, 3).map(([s]) => C.fmtDay(s, z));
     const sec = (ms: number) => Math.floor(ms / 1000);
     return {
-      organiser_first: st.organiser.first, meeting: m.name, length: m.length, place: m.place, count: st.people.length, n_in: Object.keys(st.subs).length,
+      page_url: this.env.PAGE_URL, organiser_first: st.organiser.first, meeting: m.name, length: m.length, place: m.place, count: st.people.length, n_in: Object.keys(st.subs).length,
       window_start: C.fmtYmd(m.start, z), window_end: C.fmtYmd(m.end, z), hours: C.fmtHours(m), zone_name: m.zoneName, zone_iana: m.zone, year: m.start.slice(0, 4),
       window_epoch: bl.length ? `${sec(bl[0][0])} to ${sec(bl[bl.length - 1][1])}` : '', ex_epoch: bl[0] ? `${sec(bl[0][0])}-${sec(bl[0][1])}` : '',
       ex1: ex[0] ?? '', ex2: ex[1] ?? ex[0] ?? '', ex3: ex[2] ?? ex[0] ?? '',

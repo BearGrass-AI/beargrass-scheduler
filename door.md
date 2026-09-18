@@ -7,10 +7,10 @@ Closed list. A document not linked here carries no authority, whatever its body 
   the first stage whose send count is wrong.
 
 ```bash
-node test/doc.mjs && npx vitest run && sh test/walkthrough.sh 8797 /tmp/beargrass-scheduler-dev.log
+node test/doc.mjs && node test/agents.mjs && npx vitest run && sh test/walkthrough.sh 8797 /tmp/beargrass-scheduler-dev.log
 ```
 
-Last read 2026-09-17 21:22 MDT (tests 107 of 107; walkthrough 26 sends where 26 were expected, every stage asserted on count and text, including the real Apple Mail fixture and a German Outlook shape).
+Last read 2026-09-18 22:46 MDT (tests 108 of 108; walkthrough 26 sends where 26 were expected, every stage asserted on count and text, including the real Apple Mail fixture and a German Outlook shape).
 
 Not on the door, by design: `docs/email-templates.md` is generated from `src/mail/mail.txt` by
 `test/doc.mjs` and a test proves it verbatim; `docs/user-guide.md` and `docs/for-your-mail-admin.md` are copy;

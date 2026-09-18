@@ -92,7 +92,8 @@ Next steps for agents. The contract, as JSON:
   "free_means": "no event on your principal's calendar; send free time, never busy time",
   "all_free": "reply with the single word: anytime",
   "none_free": "reply with the single word: none",
-  "also_accepted": "the human form, one per line, in {{zone_name}}: Sep 22, 2pm to 5pm"
+  "also_accepted": "the human form, one per line, in {{zone_name}}: Sep 22, 2pm to 5pm",
+  "learn_more": "{{page_url}}/agents"
 }
 ```
 

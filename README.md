@@ -34,7 +34,7 @@ Hosted at `scheduler.beargrass.ai` for invited organisations. MIT licensed: run 
 You need a Cloudflare account, a domain on it that carries no other mail, and Node.
 
 1. `npm install`, then `npx wrangler login`.
-2. In `wrangler.jsonc`: set `DOMAIN` (your mail domain), `MAILBOX` (the local part; `meet`), `PRODID`, and at the
+2. In `wrangler.jsonc`: set `DOMAIN` (your mail domain), `MAILBOX` (the local part; `meet`), `PRODID`, `PAGE_URL` (where the page is served; the ask points agents at `<PAGE_URL>/agents`), and at the
    top level `REDIRECT_ALL_TO` (the one inbox a development deploy may mail; the send binding's
    `allowed_destination_addresses` must name the same address). Under `env.production`, set the route for the page.
 3. In `src/defaults.json`: `organiser_domains` (who may start a meeting), `scheduler_name`, the default zone and
@@ -59,10 +59,11 @@ src/vision.ts        the screenshot reader on Workers AI through the AI binding;
 src/mail/mail.txt    every outbound message and the screenshot prompt, one `### name` section each
 src/mail/invite.ics  the iTIP REQUEST template
 src/defaults.json    layer 1: length, hours, days, zone map, limits, link shapes, invited domains, the model
-public/              index.html (the page and the picker), 404.html, the wordmark, the favicon; static assets
+public/              index.html (the page and the picker), agents.yaml + agents/ (the page for agents), 404.html, the wordmark, the favicon
 test/core.test.ts    vitest over core, check and vision, the copy doc, the greps (no fetch, no literals) and the ceilings
 test/walkthrough.sh  injects a kickoff, replies, must-drop and must-echo messages and a "none" poll; asserts every stage
 test/doc.mjs         writes docs/email-templates.md from mail.txt
+test/agents.mjs      writes public/agents/index.html from public/agents.yaml, coloured; a test proves them equal
 test/fixtures/       the kickoff the walkthrough starts from; clients/ holds real messages from real mail clients
 docs/                flat: email-templates.md (generated), user-guide.md, for-your-mail-admin.md
 deploy/              RUNBOOK.md, setup.sh
@@ -79,11 +80,12 @@ npm install
 npm run types        # regenerates worker-configuration.d.ts (gitignored)
 npm test             # vitest
 node test/doc.mjs    # regenerate the copy doc after editing mail.txt
+node test/agents.mjs # regenerate the agents page after editing public/agents.yaml
 npx wrangler dev --port 8797 --persist-to "$(mktemp -d)" > /tmp/beargrass-scheduler-dev.log 2>&1 &   # fresh state: the ledger counts kickoffs per organiser
 sh test/walkthrough.sh 8797 /tmp/beargrass-scheduler-dev.log   # exits 1 on the first stage whose send count is wrong
 ```
 
-## The injected walkthrough, read 2026-09-17 21:22 MDT
+## The injected walkthrough, read 2026-09-18 22:46 MDT
 
 Local dev cannot receive real mail. Inbound messages are injected at the dev server's local email URL;
 outbound sends are logged by the simulator and written to files, never delivered. Every send in the log was

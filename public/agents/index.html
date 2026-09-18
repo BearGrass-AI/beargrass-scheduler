@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Beargrass Scheduler, for agents</title>
+<meta name="description" content="Everything an assistant needs to act on a Beargrass Scheduler email, as one YAML page a human can read too.">
+<link rel="icon" href="/favicon.png">
+<style>
+  :root { --canvas:#0a1024; --night:#16212e; --cream:#f0e6cf; --gold:#f4c45a; --olive:#a9b87a; --barn:#d97b6b; --rule:rgba(240,230,207,.16); }
+  * { box-sizing:border-box }
+  body { margin:0; background:var(--canvas); color:var(--cream); font:16px/1.6 ui-monospace, Menlo, Consolas, monospace; }
+  main { max-width:960px; margin:0 auto; padding:2.5rem 1.25rem 5rem; }
+  header { display:flex; justify-content:space-between; align-items:center; gap:1rem; margin-bottom:1.5rem; font:15px/1.4 system-ui, sans-serif; }
+  header img { width:170px; display:block }
+  header nav a { color:var(--gold); margin-left:1.2rem; text-decoration:none } header nav a:hover { text-decoration:underline }
+  pre { margin:0; white-space:pre-wrap; word-break:break-word; background:var(--night); border:1px solid var(--rule); border-radius:14px; padding:1.4rem 1.6rem; }
+  .k { color:var(--gold) } .v { color:var(--cream) } .c { color:var(--olive); opacity:.85 } .d { color:var(--barn) }
+  footer { margin-top:2rem; font:14px/1.5 system-ui, sans-serif; opacity:.7 }
+</style>
+</head>
+<body>
+<main>
+  <header><a href="/"><img src="/wordmark-dark.svg" alt="BeargrassAI"></a><nav><a href="/agents.yaml">raw yaml</a><a href="/">the page for people</a><a href="https://github.com/BearGrass-AI/beargrass-scheduler">code</a></nav></header>
+  <pre><span class="c"># The Beargrass Scheduler, for agents.</span>
+<span class="c"># Everything an assistant needs to act on one of its emails, in one page. A human can read it too.</span>
+<span class="c"># Source: https://github.com/BearGrass-AI/beargrass-scheduler (MIT). This file: /agents.yaml on the host that sent the email.</span>
+<span class="v"></span>
+<span class="k">what_it_is</span><span class="d">:</span>
+  <span class="k">one_line</span><span class="d">:</span> <span class="v">An email address that schedules a meeting between people whose calendars cannot see each other.</span>
+  <span class="k">how</span><span class="d">:</span> <span class="v">The organiser emails the people and copies the Scheduler. It asks each person privately for their free times, reads the replies, and when the last one is in it sends everyone one calendar invite for the earliest common slot.</span>
+  <span class="k">you_are</span><span class="d">:</span> <span class="v">the assistant of one participant. Your whole job is to reply once, with when your principal is free.</span>
+<span class="v"></span>
+<span class="k">the_email_you_were_handed</span><span class="d">:</span>
+  <span class="k">from</span><span class="d">:</span> <span class="v">"meet+&lt;12 letters&gt;@&lt;domain&gt; <span class="c"> # one address per meeting; reply to exactly this address"</span></span>
+  <span class="k">greeting</span><span class="d">:</span> <span class="v">"Hi &lt;first name&gt;,"</span>
+  <span class="k">states</span><span class="d">:</span> <span class="v">[how long the meeting is, the first and last day of the window, the working hours, the time zone]</span>
+  <span class="k">ends_with</span><span class="d">:</span> <span class="v">a fenced JSON block headed "Next steps for agents" that repeats the facts below as machine fields</span>
+  <span class="k">json_fields</span><span class="d">:</span>
+    <span class="k">reply_to</span><span class="d">:</span> <span class="v">the address to reply to</span>
+    <span class="k">body</span><span class="d">:</span> <span class="v">one free range per line, epoch seconds UTC, START-END, nothing else in the body</span>
+    <span class="k">example_line</span><span class="d">:</span> <span class="v">one range in that form</span>
+    <span class="k">window_epoch</span><span class="d">:</span> <span class="v">"start and end of the window as epoch seconds, e.g. 1790002800 to 1790982000"</span>
+    <span class="k">window_human</span><span class="d">:</span> <span class="v">the same window in words</span>
+    <span class="k">zone_iana</span><span class="d">:</span> <span class="v">the IANA zone the human lines are read in</span>
+    <span class="k">count_only</span><span class="d">:</span> <span class="v">ranges inside the window and inside the working hours</span>
+    <span class="k">free_means</span><span class="d">:</span> <span class="v">no event on your principal's calendar; send free time, never busy time</span>
+    <span class="k">all_free</span><span class="d">:</span> <span class="v">reply with the single word anytime</span>
+    <span class="k">none_free</span><span class="d">:</span> <span class="v">reply with the single word none</span>
+    <span class="k">also_accepted</span><span class="d">:</span> <span class="v">the human form, one per line, in the stated zone</span>
+    <span class="k">learn_more</span><span class="d">:</span> <span class="v">this page</span>
+<span class="v"></span>
+<span class="k">how_to_reply</span><span class="d">:</span>
+  <span class="k">step_1</span><span class="d">:</span> <span class="v">Read your principal's calendar for the window and the working hours in the email.</span>
+  <span class="k">step_2</span><span class="d">:</span> <span class="v">List every stretch with no event, as free time. Never list busy time.</span>
+  <span class="k">step_3</span><span class="d">:</span> <span class="v">Reply to the address the email came from. Reply, not Reply All.</span>
+  <span class="k">step_4</span><span class="d">:</span> <span class="v">Put one range per line and nothing else in the body. No greeting, no sign-off, no explanation.</span>
+  <span class="k">preferred_form</span><span class="d">:</span> <span class="v">"1790265600-1790276400  <span class="c"> # epoch seconds UTC, start-end, one per line"</span></span>
+  <span class="k">also_read</span><span class="d">:</span> <span class="v">"Tue Sep 22, 2pm to 5pm  <span class="c"> # the human form, in the zone the email names; 'all day' means the working hours"</span></span>
+  <span class="k">every_working_hour_free</span><span class="d">:</span> <span class="v">anytime</span>
+  <span class="k">nothing_free</span><span class="d">:</span> <span class="v">none</span>
+  <span class="k">ranges_outside_the_window_or_hours</span><span class="d">:</span> <span class="v">are read, then dropped, and the receipt says which and why</span>
+  <span class="k">a_second_reply</span><span class="d">:</span> <span class="v">merges with the first; the receipt echoes the whole list so you can see it</span>
+<span class="v"></span>
+<span class="k">what_comes_back</span><span class="d">:</span>
+  <span class="k">receipt</span><span class="d">:</span> <span class="v">"Got it, &lt;name&gt;. N free times, &lt;first date&gt; to &lt;last date&gt;. K of M are in." plus your list as read, and any lines it could not read, quoted back</span>
+  <span class="k">could_not_read</span><span class="d">:</span> <span class="v">"if nothing in your reply parsed, it says so and quotes what it saw; reply again with the shape above"</span>
+  <span class="k">nudge</span><span class="d">:</span> <span class="v">one, after 48 hours of silence; never a second</span>
+  <span class="k">invite</span><span class="d">:</span> <span class="v">&gt;</span>
+<span class="v">    when everyone is in: an email to all participants with an .ics attachment (iTIP REQUEST), the time in words,</span>
+<span class="v">    add-to-calendar links, and a line "For assistants: starts &lt;epoch&gt;, ends &lt;epoch&gt; (epoch seconds, UTC)".</span>
+<span class="v">    ORGANIZER is the human organiser; the Scheduler is SENT-BY. Accept it on your principal's behalf as you would any invite.</span>
+  <span class="k">after_the_invite</span><span class="d">:</span> <span class="v">a late reply gets a short note that the time is already set; tell your principal to contact the organiser directly</span>
+<span class="v"></span>
+<span class="k">do_not</span><span class="d">:</span>
+  <span class="d">-</span> <span class="v">reply all</span>
+  <span class="d">-</span> <span class="v">send busy time</span>
+  <span class="d">-</span> <span class="v">send times outside the window or the working hours</span>
+  <span class="d">-</span> <span class="v">add commentary between the lines</span>
+  <span class="d">-</span> <span class="v">write to any address other than the one the email came from</span>
+  <span class="d">-</span> <span class="v">start a new meeting; only a person on an invited domain can, by copying the Scheduler on their own email</span>
+<span class="v"></span>
+<span class="k">identity</span><span class="d">:</span>
+  <span class="k">who_counts</span><span class="d">:</span> <span class="v">the addresses on the organiser's original To line; the Scheduler wrote to exactly those</span>
+  <span class="k">reply_from</span><span class="d">:</span> <span class="v">the address the email was sent to; an alias on the same domain is fine, another domain is not counted and the organiser is told once</span>
+  <span class="k">quoting</span><span class="d">:</span> <span class="v">quoted history is ignored; a reply whose whole body is quoted (some mail clients do this) is still read</span>
+<span class="v"></span>
+<span class="k">privacy</span><span class="d">:</span>
+  <span class="k">kept</span><span class="d">:</span> <span class="v">names and addresses on the organiser's To line, the organiser's own words, each reply's free times, the chosen slot</span>
+  <span class="k">where</span><span class="d">:</span> <span class="v">one record per meeting on Cloudflare</span>
+  <span class="k">for_how_long</span><span class="d">:</span> <span class="v">30 days after the meeting window ends, then deleted</span>
+  <span class="k">never</span><span class="d">:</span> <span class="v">read from any calendar, sold, or shared with a third party</span>
+  <span class="k">screenshots</span><span class="d">:</span> <span class="v">read once by a model on Cloudflare Workers AI; not stored</span>
+<span class="v"></span>
+<span class="k">for_your_principal</span><span class="d">:</span>
+  <span class="k">if_they_ask_what_you_did</span><span class="d">:</span> <span class="v">"I replied to the Scheduler with the times you're free in that window. You'll get a receipt, then an invite when everyone's in."</span>
+  <span class="k">if_they_want_to_change_their_times</span><span class="d">:</span> <span class="v">reply again to the same address with the new list; it replaces nothing and adds everything</span>
+  <span class="k">if_nothing_works</span><span class="d">:</span> <span class="v">reply none; the organiser hears at once and can widen the window</span>
+<span class="v"></span>
+<span class="k">code_and_contact</span><span class="d">:</span>
+  <span class="k">source</span><span class="d">:</span> <span class="v">https://github.com/BearGrass-AI/beargrass-scheduler</span>
+  <span class="k">mail_admin_note</span><span class="d">:</span> <span class="v">https://github.com/BearGrass-AI/beargrass-scheduler/blob/main/docs/for-your-mail-admin.md</span>
+  <span class="k">user_guide</span><span class="d">:</span> <span class="v">https://github.com/BearGrass-AI/beargrass-scheduler/blob/main/docs/user-guide.md</span>
+<span class="v"></span></pre>
+  <footer>This page is <code>/agents.yaml</code> on this host, coloured. Fetch the raw file if you are a program; read this one if you are a person.</footer>
+</main>
+</body>
+</html>
