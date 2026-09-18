@@ -241,6 +241,7 @@ describe('rendering', () => {
     expect(h).toMatch(/monospace[^>]*>\{<br>&nbsp;&nbsp;&quot;a&quot;|monospace[^>]*>\{<br>&nbsp;&nbsp;"a": 1<br>\}/);
     expect(h).toContain('<span style="color:#666">&gt; quoted</span><br><span style="color:#666">&gt; lines</span>');
     expect(h).not.toContain('pre-wrap');
+    expect(html('**By hand:** reply')).toContain('<b>By hand:</b> reply');
   });
   it('every template, rendered, becomes one <p> or code block per paragraph and one <br> per inner line; never a CSS whitespace rule', () => {
     const pack = readFileSync('src/mail/mail.txt', 'utf8'), parts = pack.split(/^### (\S+)\r?\n/m).slice(1);

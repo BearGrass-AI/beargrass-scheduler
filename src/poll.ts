@@ -250,10 +250,11 @@ export class Poll extends DurableObject<Env> {
     const st = this.st!, env = this.env, addr = this.address(), vars = this.vars();
     if (!C.subset(to.map(p => p.address), st.people.map(p => p.address))) throw new Error('recipient outside the poll');
     const text = C.unwrap(C.render(T[tpl], { ...vars, ...v }));
+    const plain = text.replace(/\*\*(.+?)\*\*/g, '$1'); // **bold** is for the HTML part; the plain part reads clean
     const recipients = [...new Set(to.map(p => env.REDIRECT_ALL_TO ?? p.address))];
     await env.EMAIL.send({
       from: { name: C.render(D.scheduler_name, vars), email: addr }, replyTo: addr, to: recipients, subject: `Re: ${st.meeting.name}`,
-      text, html: html(text), headers: { 'In-Reply-To': st.msgId, References: st.msgId, 'Auto-Submitted': 'auto-generated' },
+      text: plain, html: html(text), headers: { 'In-Reply-To': st.msgId, References: st.msgId, 'Auto-Submitted': 'auto-generated' },
       ...(attachments ? { attachments } : {}),
     });
     log(st.id, 'mail', { tpl, to: to.map(p => p.first) });

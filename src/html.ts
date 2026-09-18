@@ -1,13 +1,13 @@
 // html.ts — the HTML part of every message: the same text as the plain part, with real line breaks and paragraphs.
 // Outlook ignores `white-space: pre-wrap`, so a style is not enough (2026-09-18, a state CTO's inbox ran the ask
 // together). Blank lines become paragraphs, single newlines become <br>, leading spaces stay as non-breaking
-// spaces, a ``` fence becomes a monospace block, a quoted line (>) goes grey, a URL becomes a link.
+// spaces, a ``` fence becomes a monospace block, a quoted line (>) goes grey, a URL becomes a link, **x** is bold.
 
 const esc = (s: string) => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' } as Record<string, string>)[c]);
 const link = (s: string) => s.replace(/https?:\/\/[^\s<]+/g, url => `<a href="${url}">${url}</a>`);
-const line = (l: string) => link(esc(l).replace(/^( +)/, m => '&nbsp;'.repeat(m.length)));
+const line = (l: string) => link(esc(l).replace(/^( +)/, m => '&nbsp;'.repeat(m.length)).replace(/\*\*(.+?)\*\*/g, '<b>$1</b>'));
 
-const FONT = 'font-family:Georgia,serif;font-size:16px;line-height:1.5';
+const FONT = 'font-family:Georgia,serif;font-size:16px;line-height:1.55;max-width:640px';
 const MONO = 'font-family:ui-monospace,Menlo,Consolas,monospace;font-size:14px;line-height:1.45;background:#f4f4f2;padding:10px 12px;border-radius:6px';
 
 export function html(text: string): string {
