@@ -54,7 +54,7 @@ do_not:
   - send times outside the window or the working hours
   - add commentary between the lines
   - write to any address other than the one the email came from
-  - start a new meeting; only a person on an invited domain can, by copying the Scheduler on their own email
+  - start a new meeting; only a person on a listed domain can, by copying the Scheduler on their own email
 
 identity:
   who_counts: the addresses on the organizer's original To line; the Scheduler wrote to exactly those
